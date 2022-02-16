@@ -1,14 +1,10 @@
-const userQuizzesHtmlClass = document.querySelector(".home_created-quizzes");
-const nonUserQuizzesHtmlCLass = document.querySelector(
-    ".home_non-user-quizzes"
-);
+const userQuizzesHtmlClass = document.querySelector(".home_created-quizzes_list");
+const nonUserQuizzesHtmlCLass = document.querySelector(".home_non-user-quizzes");
 // const storedUserQuizzes = JSON.parse(localStorage.getItem("userQuizz"));
 const storedUserQuizzes = [{ id: -1 }, { id: -2 }, { id: -3 }]; //for testing only
 const URL_API = "https://mock-api.driven.com.br/api/v4/buzzquizz/";
 
-const promise = axios.get(
-    "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes"
-);
+const promise = axios.get(`${URL_API}quizzes`);
 promise.then(printQuizzes);
 
 function printQuizzes(response) {
@@ -17,8 +13,11 @@ function printQuizzes(response) {
 }
 
 function printUserQuizzes() {
-    storedUserQuizzes.forEach((element) => {
-        userQuizzesHtmlClass += `
+    if (storedUserQuizzes.length !== 0) {
+        document.querySelector(".home_created-quizzes_list").classList.toggle("hidden");
+        document.querySelector(".home_no-quizzes-created").classList.toggle("hidden");
+        storedUserQuizzes.forEach((element) => {
+            userQuizzesHtmlClass += `
 
         <article class="home_quizz" onclick="openQuizzView()">
             <img src="${element.image}" alt="">
@@ -26,7 +25,8 @@ function printUserQuizzes() {
             <p>${element.title}</p>
         </article>
         `;
-    });
+        });
+    }
 }
 
 function printNonUserQuizzes(response) {
@@ -64,6 +64,12 @@ function filterUserQuizzes(generalQuizz) {
     }
 }
 
+function openQuizzForm() {
+    document.querySelector(".home").classList.toggle("hidden");
+    document.querySelector(".quizz-form").classList.toggle("hidden");
+}
+
+
 function openQuizzView(quizzId) {
     document.querySelector(".home").classList.toggle("hidden");
     document.querySelector(".quizz-view").classList.toggle("hidden");
@@ -73,41 +79,12 @@ function openQuizzView(quizzId) {
 
 function buildQuizzView(response) {
     const quizzData = response.data;
-    // console.log(quizzData);
+    console.log(quizzData);
     renderQuizBanner(quizzData);
-    renderQuizzQuestions(quizzData.questions);
 }
 
 function renderQuizBanner(quizz) {
     const banner = document.querySelector(".banner");
-    banner.innerHTML = ` <h1>${quizz.title}</h1>`;
+    banner.innerText = quizz.title;
     banner.style.setProperty("background-image", `url(${quizz.image})`);
-}
-
-function renderQuizzQuestions(questions) {
-    console.log(questions);
-    const main = document.querySelector(".quizz-view_main");
-    questions.forEach((element, i) => {
-        main.innerHTML += `
-        <div class="quizz-box">
-            <h1 class="title"></h1>
-            <div class="answers"></div>
-        </div>`;
-        renderQuestion(element, i);
-    });
-}
-
-function renderQuestion(question, index) {
-    const title = document.querySelectorAll(".quizz-box h1");
-    title[index].innerHTML = question.title;
-    title[index].style.setProperty("background", question.color);
-    renderQuestionAnswers(question.answers, index);
-}
-
-function renderQuestionAnswers(answers, index) {
-    // console.log(answers);
-    const answersDOM = [...document.querySelectorAll(".answers")];
-    answersDOM.forEach((i) => {
-        i.innerHTML = "slakdlçaksdç";
-    });
 }

@@ -24,13 +24,13 @@
         <section class="home_no-quizzes-created hidden">
             <div class="home_no-quizzes-created_positioning-div">
                 <p>Você não criou nenhum quizz ainda :(</p>
-                <button>Criar Quizz</button>
+                <button onclick="openQuizzForm()">Criar Quizz</button>
             </div>
         </section>
         <section class="home_created-quizzes">
             <div class="home_created-quizzes_positioning-div">
                 <h2>Seus Quizzes</h2>
-                <ion-icon name="add-circle"></ion-icon>
+                <ion-icon name="add-circle" onclick="openQuizzForm()"></ion-icon>
             </div>
             <section class="home_created-quizzes_list">
                 <article class="home_quizz" onclick="openQuizzView()">
