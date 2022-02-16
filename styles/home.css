@@ -3,7 +3,7 @@
 
     --main-color: #EB453D;
     --background-color: #FAFAFA;
-    --gradient-quizzes: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%);
+    --gradient-quizzes: linear-gradient(to bottom, rgba(255, 255, 255, 0.1),rgba(0,0,0,1));
     --logo-color: #FFFFFF;
     --section-title-color: #000000;
     --text-color-gray: #B9B9B9;
@@ -80,11 +80,26 @@ header h1{
     margin-bottom: 14px;
 }
 
+.home_quizz{
+    position: relative;
+    margin-bottom: 30px;
+}
+
 .home_quizz img{
+    position: absolute;
+    top: 0;
+    z-index: -1;
     width: 340px;
+    height: 181px;
     border-radius: 5px;
-    -webkit-mask-image: linear-gradient(to top, rgba(255,255,255,0.5), rgba(255,255,255,1));
-} 
+}
+
+.home_quizz_gradient{
+    width: 340px;
+    height: 181px;
+    border-radius: 5px;
+    background: var(--gradient-quizzes);
+}
 
 .home_quizz p{
     font-size: 19px;
