@@ -1,14 +1,19 @@
 * {
     box-sizing: border-box;
 
-    --main-color: #EB453D;
-    --background-color: #FAFAFA;
-    --gradient-quizzes: linear-gradient(to bottom, rgba(255, 255, 255, 0.1),rgba(0,0,0,1));
-    --logo-color: #FFFFFF;
+    --main-color: #eb453d;
+    --background-color: #fafafa;
+    --gradient-quizzes: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.1),
+        rgba(0, 0, 0, 1)
+    );
+    --logo-color: #ffffff;
     --section-title-color: #000000;
-    --text-color-gray: #B9B9B9;
-    --quizz-title-color: #FFFFFF;
-    --dashed-border: #D5D5D5;
+    --text-color-gray: #b9b9b9;
+    --quizz-title-color: #ffffff;
+    --dashed-border: #d5d5d5;
+    --header-height: 12vh;
 }
 
 body {
@@ -18,35 +23,38 @@ body {
     background-color: var(--background-color);
 }
 
-header{
+header {
     position: fixed;
     top: 0;
     z-index: 1;
     width: 100vw;
-    height: 12vh;
+    height: var(--header-height);
     background-color: var(--main-color);
     box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-header h1{
+header h1 {
     text-align: center;
     font-size: 35px;
     font-weight: bold;
     color: var(--logo-color);
 }
 
-.home{
+.home {
     width: 340px; /* tentar retirar depois */
     margin-top: 17vh;
 }
 
-h2{
+h2 {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 14px;
 }
 
-.home_created-quizzes{
+.home_created-quizzes {
     width: 340px;
     height: 181px;
     margin-bottom: 35px;
@@ -54,7 +62,7 @@ h2{
     border-radius: 5px;
 }
 
-.home_created-quizzes_positioning-div{
+.home_created-quizzes_positioning-div {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -62,7 +70,7 @@ h2{
     margin: auto auto;
 }
 
-.home_created-quizzes p{
+.home_created-quizzes p {
     text-align: center;
     font-size: 20px;
     line-height: 23px;
@@ -70,7 +78,7 @@ h2{
     color: var(--text-color-gray);
 }
 
-.home_created-quizzes button{
+.home_created-quizzes button {
     width: 60%;
     font-size: 20px;
     padding: 2% 0;
@@ -80,12 +88,12 @@ h2{
     border-radius: 20px;
 }
 
-.home_quizz{
+.home_quizz {
     position: relative;
     margin-bottom: 60px;
 }
 
-.home_quizz img{
+.home_quizz img {
     position: absolute;
     top: 0;
     z-index: -1;
@@ -94,19 +102,19 @@ h2{
     border-radius: 5px;
 }
 
-.home_quizz_gradient{
+.home_quizz_gradient {
     width: 340px;
     height: 181px;
     border-radius: 5px;
     background: var(--gradient-quizzes);
 }
 
-.home_quizz p{
+.home_quizz p {
     font-size: 19px;
-    margin: -40px 18px 0 18px; 
+    margin: -40px 18px 0 18px;
     color: var(--quizz-title-color);
 }
 
-.hidden{
+.hidden {
     display: none;
 }
