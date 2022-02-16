@@ -1,0 +1,13 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(
+        to bottom right,
+        rgb(228, 92, 92),
+        rgb(223, 22, 72)
+    );
+    width: 100vw;
+    height: 100vh;
+}
