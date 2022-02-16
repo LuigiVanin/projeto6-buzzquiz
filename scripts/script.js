@@ -25,8 +25,8 @@ function printUserQuizzes() {
 }
 
 function printNonUserQuizzes(response) {
+    console.log(response.data)
     let nonUserQuizzesList = response.data.filter(filterUserQuizzes);
-    // console.log(nonUserQuizzesList)
     nonUserQuizzesList.forEach(element => {
         nonUserQuizzesHtmlCLass.innerHTML += `
 
@@ -40,21 +40,20 @@ function printNonUserQuizzes(response) {
 }
 
 function filterUserQuizzes(generalQuizz) {
-    // if (1 === 1) {
-    //     return true;
-    // }
-
     let comparingArray = [];
     storedUserQuizzes.forEach(userQuizz => {
-        // console.log("user quizz id: " + userQuizz.id)
         if (generalQuizz.id !== userQuizz.id) {
             comparingArray.push(true);
+        }else{
+            comparingArray.push(false);
         }
-        console.log(comparingArray)
     });
     
-    if(){
-        
+    let resultOfComparison  = comparingArray.filter(element => (element === false) );
+    if(resultOfComparison.length === 0){
+        return true 
+    }else{
+        return false
     }
 }
 
