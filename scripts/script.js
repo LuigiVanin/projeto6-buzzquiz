@@ -8,6 +8,8 @@ const nonUserQuizzesHtmlCLass = document.querySelector(
 const storedUserQuizzes = [{ id: -1 }, { id: -2 }, { id: -3 }]; //for testing only
 const URL_API = "https://mock-api.driven.com.br/api/v4/buzzquizz/";
 
+let answerCount = 0;
+let totalQuestions = 0;
 const promise = axios.get(`${URL_API}quizzes`);
 promise.then(printQuizzes);
 
@@ -86,12 +88,13 @@ function openQuizzView(quizzId) {
 
 function buildQuizzView(response) {
     const quizzData = response.data;
+    totalQuestions = quizzData.questions.length;
     console.log(quizzData);
-    renderQuizBanner(quizzData);
+    renderQuizzBanner(quizzData);
     renderQuizzQuestions(quizzData.questions);
 }
 
-function renderQuizBanner(quizz) {
+function renderQuizzBanner(quizz) {
     const banner = document.querySelector(".banner");
     banner.innerText = quizz.title;
     banner.innerHTML = ` <h1>${quizz.title}</h1>`;
@@ -112,6 +115,7 @@ function renderQuizzQuestions(questions) {
     });
 }
 
+// TODO: reduzir o número de funções!
 function renderQuestion(question, index) {
     const title = document.querySelectorAll(".quizz-box h1");
     title[index].innerHTML = question.title;
@@ -119,15 +123,19 @@ function renderQuestion(question, index) {
     renderQuestionAnswers(question.answers, index);
 }
 
-function renderQuestionAnswers(answers, index) {
+function renderQuestionAnswers(answers, questionIndex) {
     // console.log(answers);
-    const answersBox = document.querySelectorAll(".answers")[index];
+    const answersBox = document.querySelectorAll(".answers")[questionIndex];
     const randomAnswers = [...answers].sort(() => Math.random() - 0.5);
-    randomAnswers.forEach((ans, i) => {
+    randomAnswers.forEach((ans) => {
+        let correctClass = "";
+        if (ans.isCorrectAnswer) {
+            correctClass = "correct";
+        }
         answersBox.innerHTML += `
-        <div class="answer">
+        <div class="answer" onclick="selectAnswer('${questionIndex}', ${ans.isCorrectAnswer})">
             <div class="image"></div>
-            <p>${ans.text}</p>
+            <p class="${correctClass}">${ans.text}</p>
         </div>
         `;
         const image = document.querySelectorAll(".answer .image");
@@ -136,6 +144,24 @@ function renderQuestionAnswers(answers, index) {
             `url(${ans.image})`
         );
     });
-
     console.log(answersBox);
+}
+
+function selectAnswer(questionIndex, isCorrectAnswer) {
+    const question = document.querySelectorAll(".quizz-box");
+    if (question[questionIndex].classList.contains("selected")) {
+        return;
+    }
+    question[questionIndex].classList.add("selected");
+    if (isCorrectAnswer) {
+        answerCount++;
+    }
+    if (totalQuestions - 1 == questionIndex) {
+        return;
+    } else {
+        setTimeout(() => {
+            let index = parseInt(questionIndex) + 1;
+            question[index].scrollIntoView();
+        }, 1000);
+    }
 }
