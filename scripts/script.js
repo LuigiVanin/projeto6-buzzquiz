@@ -1,3 +1,29 @@
+let quizzInformation = {
+    title: "",
+    image: "",
+    questions: [],
+    levels: [],
+};
+
+let quizzQuestion = {
+    title: "",
+    color: "",
+    answers: [],
+};
+
+let quizzAnswer = {
+    text: "",
+    image: "",
+    isCorrectAnswer: false,
+};
+
+let quizzLevel = {
+    title: "",
+    image: "",
+    text: "",
+    minValue: 0,
+};
+
 const userQuizzesHtmlClass = document.querySelector(
     ".home_created-quizzes_list"
 );
@@ -10,6 +36,9 @@ const URL_API = "https://mock-api.driven.com.br/api/v4/buzzquizz/";
 
 let correctAnswerCount = 0;
 let totalQuestions = 0;
+let numberOfQuestions;
+let numberOfLevels;
+
 const promise = axios.get(`${URL_API}quizzes`);
 promise.then(printQuizzes);
 
@@ -179,8 +208,10 @@ function openQuestionsScreen() {
             .querySelector(".quizz-form_basic-info-screen")
             .classList.toggle("hidden");
         document
-            .querySelector(".quizz-form_questions-screens")
+            .querySelector(".quizz-form_questions-screen")
             .classList.toggle("hidden");
+
+        // loadQuestionScreen();
     } else {
         alert(
             "Parece que algo deu errado! Por favor,verifique se todos os campos estão preenchidos corretamente."
@@ -190,24 +221,24 @@ function openQuestionsScreen() {
 
 function testBasicInfos() {
     let inputValidation = [];
-    const quizzTitle = document.querySelector(
+    quizzInformation.title = document.querySelector(
         ".quizz-form_basic-info-screen_quizz-title"
     ).value;
-    const urlImage = document.querySelector(
+    quizzInformation.image = document.querySelector(
         ".quizz-form_basic-info-screen_url-image"
     ).value;
-    const numberOfQuestions = parseInt(
+    numberOfQuestions = parseInt(
         document.querySelector(
             ".quizz-form_basic-info-screen_number-of-questions"
         ).value
     );
-    const numberOfLevels = parseInt(
+    numberOfLevels = parseInt(
         document.querySelector(".quizz-form_basic-info-screen_number-of-levels")
             .value
     );
 
-    testQuizzTitle(inputValidation, quizzTitle);
-    testUrlImage(inputValidation, urlImage);
+    testQuizzTitle(inputValidation, quizzInformation.title);
+    testUrlImage(inputValidation, quizzInformation.image);
     testNumberOfQuestions(inputValidation, numberOfQuestions);
     testNumberOfLevels(inputValidation, numberOfLevels);
 
@@ -226,6 +257,7 @@ function testUrlImage(inputValidation, urlImage) {
     if (
         urlImage.slice(0, 8) === "https://" &&
         (urlImage.slice(-4) === ".png" ||
+            urlImage.slice(-4) === ".jpg" ||
             urlImage.slice(-5) === ".jpeg" ||
             urlImage.slice(-4) === ".gif")
     ) {
@@ -250,3 +282,7 @@ function testNumberOfLevels(inputValidation, numberOfLevels) {
         inputValidation.push(false);
     }
 }
+
+// function loadQuestionScreen(){
+
+// }

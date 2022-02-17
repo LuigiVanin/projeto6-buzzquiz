@@ -21,7 +21,7 @@
     <header>
         <h1>BuzzQuizz</h1>
     </header>
-    <section class="home ">
+    <section class="home hidden">
         <section class="home_no-quizzes-created hidden">
             <div class="home_no-quizzes-created_positioning-div">
                 <p>Você não criou nenhum quizz ainda :(</p>
@@ -52,8 +52,8 @@
 
         </div>
     </section>
-    <section class="quizz-form hidden">
-        <section class="quizz-form_basic-info-screen hidden">
+    <section class="quizz-form">
+        <section class="quizz-form_basic-info-screen">
             <p>Comece pelo começo</p>
             <div class="quizz-form_basic-info-screen_input-area">
                 <input class="quizz-form_basic-info-screen_quizz-title" type="text" placeholder="Título do quizz">
@@ -66,7 +66,7 @@
             </div>
             <button onclick="openQuestionsScreen()">Prosseguir pra criar perguntas</button>
         </section>
-        <section class="quizz-form_questions-screen">
+        <section class="quizz-form_questions-screen hidden">
             <p>Crie suas perguntas</p>
             <div class="quizz-form_questions-screen_question-num">
                 <p>Pergunta 1</p>
