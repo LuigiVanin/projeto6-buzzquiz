@@ -52,20 +52,16 @@ function printQuizzes(response) {
 
 function printUserQuizzes() {
     if (storedUserQuizzes.length !== 0) {
-        document
-            .querySelector(".home_created-quizzes_list")
-            .classList.toggle("hidden");
-        document
-            .querySelector(".home_no-quizzes-created")
-            .classList.toggle("hidden");
+        document.querySelector(".home_created-quizzes_list").classList.toggle("hidden");
+        document.querySelector(".home_no-quizzes-created").classList.toggle("hidden");
         storedUserQuizzes.forEach((element) => {
             userQuizzesHtmlClass += `
 
-        <article class="home_quizz" onclick="openQuizzView()">
-            <img src="${element.image}" alt="">
-            <div class="home_quizz_gradient"></div>
-            <p>${element.title}</p>
-        </article>
+            <article class="home_quizz" onclick="openQuizzView()">
+                <img src="${element.image}" alt="">
+                <div class="home_quizz_gradient"></div>
+                <p>${element.title}</p>
+            </article>
         `;
         });
     }
@@ -246,38 +242,22 @@ function openQuestionsScreen() {
     );
 
     if (quizzvalidation.length === 0) {
-        document
-            .querySelector(".quizz-form_basic-info-screen")
-            .classList.toggle("hidden");
-        document
-            .querySelector(".quizz-form_questions-screen")
-            .classList.toggle("hidden");
+        document.querySelector(".quizz-form_basic-info-screen").classList.toggle("hidden");
+        document.querySelector(".quizz-form_questions-screen").classList.toggle("hidden");
 
-        // loadQuestionScreen();
+        console.log(numberOfQuestions)
+        loadQuestionScreen();
     } else {
-        alert(
-            "Parece que algo deu errado! Por favor,verifique se todos os campos estão preenchidos corretamente."
-        );
+        alert("Parece que algo deu errado! Por favor,verifique se todos os campos estão preenchidos corretamente.");
     }
 }
 
 function testBasicInfos() {
     let inputValidation = [];
-    quizzInformation.title = document.querySelector(
-        ".quizz-form_basic-info-screen_quizz-title"
-    ).value;
-    quizzInformation.image = document.querySelector(
-        ".quizz-form_basic-info-screen_url-image"
-    ).value;
-    numberOfQuestions = parseInt(
-        document.querySelector(
-            ".quizz-form_basic-info-screen_number-of-questions"
-        ).value
-    );
-    numberOfLevels = parseInt(
-        document.querySelector(".quizz-form_basic-info-screen_number-of-levels")
-            .value
-    );
+    quizzInformation.title = document.querySelector(".quizz-form_basic-info-screen_quizz-title").value;
+    quizzInformation.image = document.querySelector(".quizz-form_basic-info-screen_url-image").value;
+    numberOfQuestions = parseInt(document.querySelector(".quizz-form_basic-info-screen_number-of-questions").value);
+    numberOfLevels = parseInt(document.querySelector(".quizz-form_basic-info-screen_number-of-levels").value);
 
     testQuizzTitle(inputValidation, quizzInformation.title);
     testUrlImage(inputValidation, quizzInformation.image);
@@ -296,12 +276,7 @@ function testQuizzTitle(inputValidation, quizzTitle) {
 }
 
 function testUrlImage(inputValidation, urlImage) {
-    if (
-        urlImage.slice(0, 8) === "https://" &&
-        (urlImage.slice(-4) === ".png" ||
-            urlImage.slice(-4) === ".jpg" ||
-            urlImage.slice(-5) === ".jpeg" ||
-            urlImage.slice(-4) === ".gif")
+    if (urlImage.slice(0, 8) === "https://" && (urlImage.slice(-4) === ".png" || urlImage.slice(-4) === ".jpg" || urlImage.slice(-5) === ".jpeg" || urlImage.slice(-4) === ".gif")
     ) {
         inputValidation.push(true);
     } else {
@@ -325,6 +300,34 @@ function testNumberOfLevels(inputValidation, numberOfLevels) {
     }
 }
 
-// function loadQuestionScreen(){
-
-// }
+function loadQuestionScreen(){
+    const questionListHtmlClass = document.querySelector(".quizz-form_questions-screen_question-list");
+    console.log(questionListHtmlClass)
+    for (let i = 1; i <= numberOfQuestions; i++){
+        console.log("Entrei")
+        questionListHtmlClass.innerHTML +=`
+        
+        <div class="quizz-form_questions-screen_question-num">
+            <p>Pergunta ${i}</p>
+            <input type="text" placeholder="Texto da pergunta">
+            <input type="text" placeholder="Cor de fundo da pergunta">
+            <p>Resposta correta</p>
+            <input type="text" placeholder="Resposta correta">
+            <input type="text" placeholder="URL da imagem">
+            <p>Respostas incorretas</p>
+            <div class="quizz-form_questions-screen_wrong-answer">
+                <input type="text" placeholder="Resposta incorreta 1">
+                <input type="text" placeholder="URL da imagem 1">
+            </div>
+            <div class="quizz-form_questions-screen_wrong-answer">
+                <input type="text" placeholder="Resposta incorreta 2">
+                <input type="text" placeholder="URL da imagem 2">
+            </div>
+            <div class="quizz-form_questions-screen_wrong-answer">
+                <input type="text" placeholder="Resposta incorreta 3">
+                <input type="text" placeholder="URL da imagem 3">
+            </div>
+        </div>
+        `
+    }
+}
