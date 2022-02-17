@@ -8,7 +8,7 @@ const nonUserQuizzesHtmlCLass = document.querySelector(
 const storedUserQuizzes = [{ id: -1 }, { id: -2 }, { id: -3 }]; //for testing only
 const URL_API = "https://mock-api.driven.com.br/api/v4/buzzquizz/";
 
-let answerCount = 0;
+let correctAnswerCount = 0;
 let totalQuestions = 0;
 const promise = axios.get(`${URL_API}quizzes`);
 promise.then(printQuizzes);
@@ -133,7 +133,7 @@ function renderQuestionAnswers(answers, questionIndex) {
             correctClass = "correct";
         }
         answersBox.innerHTML += `
-        <div class="answer" onclick="selectAnswer('${questionIndex}', ${ans.isCorrectAnswer})">
+        <div class="answer" onclick="selectAnswer('${questionIndex}', ${ans.isCorrectAnswer}, this)">
             <div class="image"></div>
             <p class="${correctClass}">${ans.text}</p>
         </div>
@@ -147,14 +147,15 @@ function renderQuestionAnswers(answers, questionIndex) {
     console.log(answersBox);
 }
 
-function selectAnswer(questionIndex, isCorrectAnswer) {
+function selectAnswer(questionIndex, isCorrectAnswer, element) {
     const question = document.querySelectorAll(".quizz-box");
     if (question[questionIndex].classList.contains("selected")) {
         return;
     }
+    element.children[0].classList.add("chosen");
     question[questionIndex].classList.add("selected");
     if (isCorrectAnswer) {
-        answerCount++;
+        correctAnswerCount++;
     }
     if (totalQuestions - 1 == questionIndex) {
         return;
