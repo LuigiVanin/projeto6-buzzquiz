@@ -52,8 +52,12 @@ function printQuizzes(response) {
 
 function printUserQuizzes() {
     if (storedUserQuizzes.length !== 0) {
-        document.querySelector(".home_created-quizzes_list").classList.toggle("hidden");
-        document.querySelector(".home_no-quizzes-created").classList.toggle("hidden");
+        document
+            .querySelector(".home_created-quizzes_list")
+            .classList.toggle("hidden");
+        document
+            .querySelector(".home_no-quizzes-created")
+            .classList.toggle("hidden");
         storedUserQuizzes.forEach((element) => {
             userQuizzesHtmlClass += `
 
@@ -192,6 +196,8 @@ function selectAnswer(questionIndex, isCorrectAnswer, element) {
     }
     if (questionsAnswered === totalQuestions) {
         setTimeout(renderResult, 1000);
+
+        // FIX: scrol into view error
     } else {
         setTimeout(() => {
             let index = parseInt(questionIndex) + 1;
@@ -212,6 +218,7 @@ function objectLevelCompare(a, b) {
 
 function renderResult() {
     const result = Math.round((correctAnswerCount / totalQuestions) * 100);
+    const mainColumn = document.querySelector(".quizz-view_main");
     const resultArea = document.querySelector(".quizz-result");
     resultArea.classList.add("show");
 
@@ -231,6 +238,13 @@ function renderResult() {
     <img src="${myLevel.image}">
     <p>${myLevel.text}</p>
     `;
+
+    mainColumn.innerHTML += `
+    <div class="nav-box">
+        <button class="restart">Reiniciar Quizz</button>
+        <button class="back-home">Voltar para a home</button>
+    </div>
+    `;
     resultArea.scrollIntoView();
 }
 
@@ -242,22 +256,39 @@ function openQuestionsScreen() {
     );
 
     if (quizzvalidation.length === 0) {
-        document.querySelector(".quizz-form_basic-info-screen").classList.toggle("hidden");
-        document.querySelector(".quizz-form_questions-screen").classList.toggle("hidden");
+        document
+            .querySelector(".quizz-form_basic-info-screen")
+            .classList.toggle("hidden");
+        document
+            .querySelector(".quizz-form_questions-screen")
+            .classList.toggle("hidden");
 
-        console.log(numberOfQuestions)
+        console.log(numberOfQuestions);
         loadQuestionScreen();
     } else {
-        alert("Parece que algo deu errado! Por favor,verifique se todos os campos estão preenchidos corretamente.");
+        alert(
+            "Parece que algo deu errado! Por favor,verifique se todos os campos estão preenchidos corretamente."
+        );
     }
 }
 
 function testBasicInfos() {
     let inputValidation = [];
-    quizzInformation.title = document.querySelector(".quizz-form_basic-info-screen_quizz-title").value;
-    quizzInformation.image = document.querySelector(".quizz-form_basic-info-screen_url-image").value;
-    numberOfQuestions = parseInt(document.querySelector(".quizz-form_basic-info-screen_number-of-questions").value);
-    numberOfLevels = parseInt(document.querySelector(".quizz-form_basic-info-screen_number-of-levels").value);
+    quizzInformation.title = document.querySelector(
+        ".quizz-form_basic-info-screen_quizz-title"
+    ).value;
+    quizzInformation.image = document.querySelector(
+        ".quizz-form_basic-info-screen_url-image"
+    ).value;
+    numberOfQuestions = parseInt(
+        document.querySelector(
+            ".quizz-form_basic-info-screen_number-of-questions"
+        ).value
+    );
+    numberOfLevels = parseInt(
+        document.querySelector(".quizz-form_basic-info-screen_number-of-levels")
+            .value
+    );
 
     testQuizzTitle(inputValidation, quizzInformation.title);
     testUrlImage(inputValidation, quizzInformation.image);
@@ -276,7 +307,12 @@ function testQuizzTitle(inputValidation, quizzTitle) {
 }
 
 function testUrlImage(inputValidation, urlImage) {
-    if (urlImage.slice(0, 8) === "https://" && (urlImage.slice(-4) === ".png" || urlImage.slice(-4) === ".jpg" || urlImage.slice(-5) === ".jpeg" || urlImage.slice(-4) === ".gif")
+    if (
+        urlImage.slice(0, 8) === "https://" &&
+        (urlImage.slice(-4) === ".png" ||
+            urlImage.slice(-4) === ".jpg" ||
+            urlImage.slice(-5) === ".jpeg" ||
+            urlImage.slice(-4) === ".gif")
     ) {
         inputValidation.push(true);
     } else {
@@ -300,12 +336,14 @@ function testNumberOfLevels(inputValidation, numberOfLevels) {
     }
 }
 
-function loadQuestionScreen(){
-    const questionListHtmlClass = document.querySelector(".quizz-form_questions-screen_question-list");
-    console.log(questionListHtmlClass)
-    for (let i = 1; i <= numberOfQuestions; i++){
-        console.log("Entrei")
-        questionListHtmlClass.innerHTML +=`
+function loadQuestionScreen() {
+    const questionListHtmlClass = document.querySelector(
+        ".quizz-form_questions-screen_question-list"
+    );
+    console.log(questionListHtmlClass);
+    for (let i = 1; i <= numberOfQuestions; i++) {
+        console.log("Entrei");
+        questionListHtmlClass.innerHTML += `
         
         <div class="quizz-form_questions-screen_question-num">
             <p>Pergunta ${i}</p>
@@ -328,6 +366,6 @@ function loadQuestionScreen(){
                 <input type="text" placeholder="URL da imagem 3">
             </div>
         </div>
-        `
+        `;
     }
 }
