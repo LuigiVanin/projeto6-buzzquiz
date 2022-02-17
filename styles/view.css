@@ -22,19 +22,21 @@
     font-size: 24px;
     font-weight: bold;
     z-index: 2;
+    width: 340px;
+    text-align: center;
 }
 
 .banner::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.589), rgba(0, 0, 0, 0));
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.1));
 }
 
 .quizz-view_main {
     min-height: calc(100vh - var(--header-height) - var(--banner-height));
-    background-color: rgb(226, 226, 226);
-    padding-inline: 10px;
+    background-color: #e5e5e5;
+
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -43,13 +45,45 @@
 .quizz-box {
     width: 100%;
     background-color: white;
+    padding: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
 }
 
 .quizz-box .title {
     width: 100%;
-    min-height: 75px;
+    min-height: 89px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+/* TODO: search for better layout */
+
+.answers {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.answers .answer {
+    width: 163px;
+}
+
+.answers .image {
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 113px;
+}
+
+.answers p {
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 15px;
 }

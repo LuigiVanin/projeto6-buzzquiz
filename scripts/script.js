@@ -99,12 +99,13 @@ function renderQuizBanner(quizz) {
 }
 
 function renderQuizzQuestions(questions) {
-    console.log(questions);
+    // console.log(questions);
     const main = document.querySelector(".quizz-view_main");
     questions.forEach((element, i) => {
         main.innerHTML += `
         <div class="quizz-box">
-            <h1 class="title"></h1>
+            <h1 class="title">
+            </h1>
             <div class="answers"></div>
         </div>`;
         renderQuestion(element, i);
@@ -120,8 +121,21 @@ function renderQuestion(question, index) {
 
 function renderQuestionAnswers(answers, index) {
     // console.log(answers);
-    const answersDOM = [...document.querySelectorAll(".answers")];
-    answersDOM.forEach((i) => {
-        i.innerHTML = "slakdlçaksdç";
+    const answersBox = document.querySelectorAll(".answers")[index];
+    const randomAnswers = [...answers].sort(() => Math.random() - 0.5);
+    randomAnswers.forEach((ans, i) => {
+        answersBox.innerHTML += `
+        <div class="answer">
+            <div class="image"></div>
+            <p>${ans.text}</p>
+        </div>
+        `;
+        const image = document.querySelectorAll(".answer .image");
+        image[image.length - 1].style.setProperty(
+            "background-image",
+            `url(${ans.image})`
+        );
     });
+
+    console.log(answersBox);
 }

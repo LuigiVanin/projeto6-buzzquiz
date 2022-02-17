@@ -1,9 +1,11 @@
 :root {
     --main-color: #eb453d;
     --background-color: #fafafa;
-    --gradient-quizzes: linear-gradient(to bottom,
-            rgba(255, 255, 255, 0.1),
-            rgba(0, 0, 0, 1));
+    --gradient-quizzes: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.1),
+        rgba(0, 0, 0, 1)
+    );
     --logo-color: #ffffff;
     --section-title-color: #000000;
     --text-color-gray: #b9b9b9;
@@ -27,7 +29,7 @@ body {
 header {
     position: fixed;
     top: 0;
-    z-index: 1;
+    z-index: 3;
     width: 100vw;
     height: var(--header-height);
     background-color: var(--main-color);
@@ -105,7 +107,7 @@ header h1 {
     color: var(--main-color);
 }
 
-.home>h2 {
+.home > h2 {
     font-size: 20px;
     font-weight: bold;
     margin: 58px 0 14px 0;
