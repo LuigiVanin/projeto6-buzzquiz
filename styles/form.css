@@ -1,16 +1,26 @@
-.quizz-form_basic-info-screen{
+.quizz-form_basic-info-screen {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.quizz-form_basic-info-screen p{
+.quizz-form_basic-info-screen p {
     font-size: 20px;
     font-weight: bold;
-    margin: calc(var(--header-height) + 50px) 0 50px 0;
+    margin: calc(var(--header-height) + 50px) 0 29px 0;
 }
 
-.quizz-form_basic-info-screen input{
+.quizz-form_basic-info-screen_input-area {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 21px 0 15px 0;
+    background-color: var(--logo-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.quizz-form_basic-info-screen input {
     font-size: 19px;
     width: 341px;
     padding: 17px 13px 12px 13px;
@@ -19,23 +29,65 @@
     border-radius: 5px;
 }
 
-::placeholder{
+::placeholder {
     font-size: 19px;
     font-style: italic;
     color: var(--placeholder-color);
 }
 
-.quizz-form_basic-info-screen button{ /*font-family is not being apllied, look for the reason later*/
+.quizz-form_basic-info-screen button {
+    /*font-family is not being apllied, look for the reason later*/
     width: 324px;
     height: 54px;
     font-size: 18px;
-    margin-top: 44px;
+    margin-top: 29px;
     color: var(--button-text-color);
     background-color: var(--main-color);
     border: 1px solid var(--main-color);
     border-radius: 15px;
 }
 
-.hidden{
+.quizz-form_questions-screen{
+    display: flex;
+    flex-direction: column;
+}
+
+.quizz-form_questions-screen>p {
+    font-size: 20px;
+    font-weight: bold;
+    margin: calc(var(--header-height) + 50px) auto 50px auto;
+}
+
+.quizz-form_questions-screen_question-num {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    padding: 0 17px 28px 17px;
+    margin-bottom: 24px;
+    background-color: var(--logo-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.quizz-form_questions-screen_question-num p {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 14px 0 15px 0;
+}
+
+.quizz-form_questions-screen_question-num input {
+    font-size: 19px;
+    padding: 17px 13px 12px 13px;
+    margin-bottom: 14px;
+    border: 1px solid var(--input-border);
+    border-radius: 5px;
+}
+
+.quizz-form_questions-screen_wrong-answer{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.hidden {
     display: none;
 }
