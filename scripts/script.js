@@ -24,6 +24,8 @@ let quizzLevel = {
     minValue: 0,
 };
 
+let quizzLevels = null;
+
 const userQuizzesHtmlClass = document.querySelector(
     ".home_created-quizzes_list"
 );
@@ -35,6 +37,7 @@ const storedUserQuizzes = [{ id: -1 }, { id: -2 }, { id: -3 }]; //for testing on
 const URL_API = "https://mock-api.driven.com.br/api/v4/buzzquizz/";
 
 let correctAnswerCount = 0;
+let questionsAnswered = 0;
 let totalQuestions = 0;
 let numberOfQuestions;
 let numberOfLevels;
@@ -118,6 +121,7 @@ function buildQuizzView(response) {
     const quizzData = response.data;
     totalQuestions = quizzData.questions.length;
     console.log(quizzData);
+    quizzLevel = [...quizzData.levels];
     renderQuizzBanner(quizzData);
     renderQuizzQuestions(quizzData.questions);
 }
@@ -135,13 +139,16 @@ function renderQuizzQuestions(questions) {
     questions.forEach((element, i) => {
         main.innerHTML += `
         <div class="quizz-box">
-            <h1 class="title">
-            </h1>
+            <h1 class="title"></h1>
             <div class="answers"></div>
         </div>`;
         renderQuestion(element, i);
     });
-    console.log("aqui");
+
+    main.innerHTML += `
+    <div class="quizz-result">
+    </div>
+    `;
 }
 
 // TODO: reduzir o número de funções!
@@ -181,19 +188,54 @@ function selectAnswer(questionIndex, isCorrectAnswer, element) {
     if (question[questionIndex].classList.contains("selected")) {
         return;
     }
+    questionsAnswered++;
     element.children[0].classList.add("chosen");
     question[questionIndex].classList.add("selected");
     if (isCorrectAnswer) {
         correctAnswerCount++;
     }
-    if (totalQuestions - 1 == questionIndex) {
-        return;
+    if (questionsAnswered === totalQuestions) {
+        setTimeout(renderResult, 1000);
     } else {
         setTimeout(() => {
             let index = parseInt(questionIndex) + 1;
             question[index].scrollIntoView();
         }, 1000);
     }
+}
+
+function objectLevelCompare(a, b) {
+    if (a.minValue < b.minValue) {
+        return -1;
+    }
+    if (a.minValue > b.minValue) {
+        return 1;
+    }
+    return 0;
+}
+
+function renderResult() {
+    const result = Math.round((correctAnswerCount / totalQuestions) * 100);
+    const resultArea = document.querySelector(".quizz-result");
+    resultArea.classList.add("show");
+
+    let myLevel = quizzLevel[0];
+    quizzLevel = quizzLevel.sort(objectLevelCompare);
+
+    for (let i = 0; i < quizzLevel.length; i++) {
+        if (result < quizzLevel[i].minValue) {
+            break;
+        }
+        myLevel = quizzLevel[i];
+    }
+    console.log(myLevel);
+
+    resultArea.innerHTML = `
+    <h1 class="title">${result}% de acerto: ${myLevel.title}</h1>
+    <img src="${myLevel.image}">
+    <p>${myLevel.text}</p>
+    `;
+    resultArea.scrollIntoView();
 }
 
 function openQuestionsScreen() {
