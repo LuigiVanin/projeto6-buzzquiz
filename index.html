@@ -53,12 +53,17 @@
         </div>
     </section>
     <section class="quizz-form hidden">
-        <p>Comece pelo começo</p>
-        <input type="text" placeholder="Título do quizz">
-        <input type="text" placeholder="URL da imagem do seu quizz">
-        <input type="text" placeholder="Quantidade de perguntas do quizz">
-        <input type="text" placeholder="Quantidade de níveis do quizz">
-        <button>Prosseguir pra criar perguntas</button>
+        <div class="quizz-form_basic-info-screen">
+            <p>Comece pelo começo</p>
+            <input class="quizz-form_basic-info-screen_quizz-title" type="text" placeholder="Título do quizz">
+            <input class="quizz-form_basic-info-screen_url-image" type="text" placeholder="URL da imagem do seu quizz">
+            <input class="quizz-form_basic-info-screen_number-of-questions" type="text" placeholder="Quantidade de perguntas do quizz">
+            <input class="quizz-form_basic-info-screen_number-of-levels" type="text" placeholder="Quantidade de níveis do quizz">
+            <button onclick="openQuestionsScreen()">Prosseguir pra criar perguntas</button>
+        </div>
+        <div class="quizz-form_questions-screen">
+
+        </div>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

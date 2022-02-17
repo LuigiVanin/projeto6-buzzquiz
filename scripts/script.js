@@ -40,7 +40,6 @@ function printUserQuizzes() {
 }
 
 function printNonUserQuizzes(response) {
-    console.log(response.data);
     let nonUserQuizzesList = response.data.filter(filterUserQuizzes);
     nonUserQuizzesList.forEach((element) => {
         nonUserQuizzesHtmlCLass.innerHTML += `
@@ -166,3 +165,64 @@ function selectAnswer(questionIndex, isCorrectAnswer, element) {
         }, 1000);
     }
 }
+
+function openQuestionsScreen() {
+    let quizzvalidation = [];
+    let resultOfTestingQuizzInfos = testBasicInfos();
+    quizzvalidation = resultOfTestingQuizzInfos.filter( (element) => element === false);
+
+    if (quizzvalidation.length === 0) {
+        document.querySelector(".quizz-form_basic-info-screen").classList.toggle("hidden");
+        document.querySelector(".quizz-form_questions-screens").classList.toggle("hidden");
+    }else{
+        alert("Parece que algo deu errado! Por favor,verifique se todos os campos estão preenchidos corretamente.")
+    }
+}
+
+function testBasicInfos(){
+    let inputValidation = [];
+    const quizzTitle = document.querySelector(".quizz-form_basic-info-screen_quizz-title").value
+    const urlImage = document.querySelector(".quizz-form_basic-info-screen_url-image").value
+    const numberOfQuestions = parseInt(document.querySelector(".quizz-form_basic-info-screen_number-of-questions").value)
+    const numberOfLevels = parseInt(document.querySelector(".quizz-form_basic-info-screen_number-of-levels").value)
+
+    testQuizzTitle(inputValidation, quizzTitle);
+    testUrlImage(inputValidation, urlImage);
+    testNumberOfQuestions(inputValidation, numberOfQuestions);
+    testNumberOfLevels(inputValidation, numberOfLevels);
+
+    return inputValidation;
+}
+
+function testQuizzTitle(inputValidation, quizzTitle){
+    if(quizzTitle.length >= 20 && quizzTitle.length <= 65){
+        inputValidation.push(true);
+    }else{
+        inputValidation.push(false);
+    }
+}
+
+function testUrlImage(inputValidation, urlImage){
+    if(urlImage.slice(0,8) === "https://" && ( urlImage.slice(-4) === ".png" || urlImage.slice(-5) === ".jpeg" || urlImage.slice(-4) === ".gif" )){
+        inputValidation.push(true);
+    }else{
+        inputValidation.push(false);
+    }
+}
+
+function testNumberOfQuestions(inputValidation, numberOfQuestions){
+    if(numberOfQuestions >= 3){
+        inputValidation.push(true);
+    }else{
+        inputValidation.push(false);
+    }
+}
+
+function testNumberOfLevels(inputValidation, numberOfLevels){
+    if(numberOfLevels >= 2){
+        inputValidation.push(true);
+    }else{
+        inputValidation.push(false);
+    }
+}
+
