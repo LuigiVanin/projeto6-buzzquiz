@@ -10,14 +10,15 @@
     --section-title-color: #000000;
     --text-color-gray: #b9b9b9;
     --quizz-title-color: #ffffff;
-    --button-text-color:#FFF5F4;
-    --placeholder-color: #BABABA;
-    --input-border: #D1D1D1;
+    --button-text-color: #fff5f4;
+    --placeholder-color: #bababa;
+    --input-border: #d1d1d1;
     --dashed-border: #d5d5d5;
-
 
     --header-height: 12vh;
     --banner-height: 142px;
+    --image-width: calc(50vw - (2 * var(--answer-gap)));
+    --answer-gap: 15px;
 }
 
 * {
