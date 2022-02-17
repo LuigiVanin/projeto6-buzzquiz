@@ -112,6 +112,7 @@ function renderQuizzQuestions(questions) {
         </div>`;
         renderQuestion(element, i);
     });
+    console.log("aqui");
 }
 
 // TODO: reduzir o número de funções!
@@ -169,22 +170,41 @@ function selectAnswer(questionIndex, isCorrectAnswer, element) {
 function openQuestionsScreen() {
     let quizzvalidation = [];
     let resultOfTestingQuizzInfos = testBasicInfos();
-    quizzvalidation = resultOfTestingQuizzInfos.filter( (element) => element === false);
+    quizzvalidation = resultOfTestingQuizzInfos.filter(
+        (element) => element === false
+    );
 
     if (quizzvalidation.length === 0) {
-        document.querySelector(".quizz-form_basic-info-screen").classList.toggle("hidden");
-        document.querySelector(".quizz-form_questions-screens").classList.toggle("hidden");
-    }else{
-        alert("Parece que algo deu errado! Por favor,verifique se todos os campos estão preenchidos corretamente.")
+        document
+            .querySelector(".quizz-form_basic-info-screen")
+            .classList.toggle("hidden");
+        document
+            .querySelector(".quizz-form_questions-screens")
+            .classList.toggle("hidden");
+    } else {
+        alert(
+            "Parece que algo deu errado! Por favor,verifique se todos os campos estão preenchidos corretamente."
+        );
     }
 }
 
-function testBasicInfos(){
+function testBasicInfos() {
     let inputValidation = [];
-    const quizzTitle = document.querySelector(".quizz-form_basic-info-screen_quizz-title").value
-    const urlImage = document.querySelector(".quizz-form_basic-info-screen_url-image").value
-    const numberOfQuestions = parseInt(document.querySelector(".quizz-form_basic-info-screen_number-of-questions").value)
-    const numberOfLevels = parseInt(document.querySelector(".quizz-form_basic-info-screen_number-of-levels").value)
+    const quizzTitle = document.querySelector(
+        ".quizz-form_basic-info-screen_quizz-title"
+    ).value;
+    const urlImage = document.querySelector(
+        ".quizz-form_basic-info-screen_url-image"
+    ).value;
+    const numberOfQuestions = parseInt(
+        document.querySelector(
+            ".quizz-form_basic-info-screen_number-of-questions"
+        ).value
+    );
+    const numberOfLevels = parseInt(
+        document.querySelector(".quizz-form_basic-info-screen_number-of-levels")
+            .value
+    );
 
     testQuizzTitle(inputValidation, quizzTitle);
     testUrlImage(inputValidation, urlImage);
@@ -194,35 +214,39 @@ function testBasicInfos(){
     return inputValidation;
 }
 
-function testQuizzTitle(inputValidation, quizzTitle){
-    if(quizzTitle.length >= 20 && quizzTitle.length <= 65){
+function testQuizzTitle(inputValidation, quizzTitle) {
+    if (quizzTitle.length >= 20 && quizzTitle.length <= 65) {
         inputValidation.push(true);
-    }else{
+    } else {
         inputValidation.push(false);
     }
 }
 
-function testUrlImage(inputValidation, urlImage){
-    if(urlImage.slice(0,8) === "https://" && ( urlImage.slice(-4) === ".png" || urlImage.slice(-5) === ".jpeg" || urlImage.slice(-4) === ".gif" )){
+function testUrlImage(inputValidation, urlImage) {
+    if (
+        urlImage.slice(0, 8) === "https://" &&
+        (urlImage.slice(-4) === ".png" ||
+            urlImage.slice(-5) === ".jpeg" ||
+            urlImage.slice(-4) === ".gif")
+    ) {
         inputValidation.push(true);
-    }else{
+    } else {
         inputValidation.push(false);
     }
 }
 
-function testNumberOfQuestions(inputValidation, numberOfQuestions){
-    if(numberOfQuestions >= 3){
+function testNumberOfQuestions(inputValidation, numberOfQuestions) {
+    if (numberOfQuestions >= 3) {
         inputValidation.push(true);
-    }else{
+    } else {
         inputValidation.push(false);
     }
 }
 
-function testNumberOfLevels(inputValidation, numberOfLevels){
-    if(numberOfLevels >= 2){
+function testNumberOfLevels(inputValidation, numberOfLevels) {
+    if (numberOfLevels >= 2) {
         inputValidation.push(true);
-    }else{
+    } else {
         inputValidation.push(false);
     }
 }
-
