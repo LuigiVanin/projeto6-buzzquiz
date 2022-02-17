@@ -38,6 +38,8 @@ let quizzLevels = null;
 let correctAnswerCount = 0;
 let questionsAnswered = 0;
 let totalQuestions = 0;
+let selectedQuizzId = null;
+
 let numberOfQuestions;
 let numberOfLevels;
 
@@ -110,8 +112,9 @@ function openQuizzForm() {
 }
 
 function openQuizzView(quizzId) {
-    document.querySelector(".home").classList.toggle("hidden");
-    document.querySelector(".quizz-view").classList.toggle("hidden");
+    selectedQuizzId = quizzId;
+    document.querySelector(".home").classList.add("hidden");
+    document.querySelector(".quizz-view").classList.remove("hidden");
 
     let quizz = axios.get(`${URL_API}quizzes/${quizzId}`).then(buildQuizzView);
 }
@@ -218,6 +221,7 @@ function objectLevelCompare(a, b) {
 function restartData() {
     questionsAnswered = 0;
     correctAnswerCount = 0;
+    totalQuestions = 0;
     quizzLevels = null;
 }
 
@@ -232,7 +236,14 @@ function backToHome() {
     document.querySelector(".home_quizz").scrollIntoView();
 }
 
-function restartQuizz() {}
+function restartQuizz() {
+    document.querySelector(".quizz-view_main").remove();
+    document.querySelector(
+        ".quizz-view"
+    ).innerHTML += `<div class="quizz-view_main"></div>`;
+    restartData();
+    openQuizzView(selectedQuizzId);
+}
 
 function renderResult() {
     const result = Math.round((correctAnswerCount / totalQuestions) * 100);
