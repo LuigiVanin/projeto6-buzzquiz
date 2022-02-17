@@ -24,8 +24,6 @@ let quizzLevel = {
     minValue: 0,
 };
 
-let quizzLevels = null;
-
 const userQuizzesHtmlClass = document.querySelector(
     ".home_created-quizzes_list"
 );
@@ -36,6 +34,7 @@ const nonUserQuizzesHtmlCLass = document.querySelector(
 const storedUserQuizzes = [{ id: -1 }, { id: -2 }, { id: -3 }]; //for testing only
 const URL_API = "https://mock-api.driven.com.br/api/v4/buzzquizz/";
 
+let quizzLevels = null;
 let correctAnswerCount = 0;
 let questionsAnswered = 0;
 let totalQuestions = 0;
@@ -121,7 +120,7 @@ function buildQuizzView(response) {
     const quizzData = response.data;
     totalQuestions = quizzData.questions.length;
     console.log(quizzData);
-    quizzLevel = [...quizzData.levels];
+    quizzLevels = [...quizzData.levels];
     renderQuizzBanner(quizzData);
     renderQuizzQuestions(quizzData.questions);
 }
@@ -216,20 +215,39 @@ function objectLevelCompare(a, b) {
     return 0;
 }
 
+function restartData() {
+    questionsAnswered = 0;
+    correctAnswerCount = 0;
+    quizzLevels = null;
+}
+
+function backToHome() {
+    restartData();
+    document.querySelector(".quizz-view_main").remove();
+    document.querySelector(
+        ".quizz-view"
+    ).innerHTML += `<div class="quizz-view_main"></div>`;
+    document.querySelector(".quizz-view").classList.toggle("hidden");
+    document.querySelector(".home").classList.toggle("hidden");
+    document.querySelector(".home_quizz").scrollIntoView();
+}
+
+function restartQuizz() {}
+
 function renderResult() {
     const result = Math.round((correctAnswerCount / totalQuestions) * 100);
     const mainColumn = document.querySelector(".quizz-view_main");
     const resultArea = document.querySelector(".quizz-result");
     resultArea.classList.add("show");
 
-    let myLevel = quizzLevel[0];
-    quizzLevel = quizzLevel.sort(objectLevelCompare);
+    let myLevel = quizzLevels[0];
+    quizzLevels = quizzLevels.sort(objectLevelCompare);
 
-    for (let i = 0; i < quizzLevel.length; i++) {
-        if (result < quizzLevel[i].minValue) {
+    for (let i = 0; i < quizzLevels.length; i++) {
+        if (result < quizzLevels[i].minValue) {
             break;
         }
-        myLevel = quizzLevel[i];
+        myLevel = quizzLevels[i];
     }
     console.log(myLevel);
 
@@ -241,10 +259,12 @@ function renderResult() {
 
     mainColumn.innerHTML += `
     <div class="nav-box">
-        <button class="restart">Reiniciar Quizz</button>
-        <button class="back-home">Voltar para a home</button>
+        <button onclick="restartQuizz()" class="restart">Reiniciar Quizz</button>
+        <button onclick="backToHome()">Voltar para a home</button>
     </div>
     `;
+
+    // FIX: scroll not working
     resultArea.scrollIntoView();
 }
 
