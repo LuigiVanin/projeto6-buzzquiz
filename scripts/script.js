@@ -43,6 +43,8 @@ let selectedQuizzId = null;
 let numberOfQuestions;
 let numberOfLevels;
 let inputValidation = [];
+let wrongAnswersList = [];
+let wrongImagesList = [];
 
 const promise = axios.get(`${URL_API}quizzes`);
 promise.then(printQuizzes);
@@ -372,8 +374,13 @@ function testNumberOfLevels(numberOfLevels) {
 }
 
 function saveNumberOfQuestionsInfo() {
+    quizzInformation.questions = [];
     for (let i = 0; i < numberOfQuestions; i++) {
-        quizzInformation.questions.push(quizzQuestion);
+        quizzInformation.questions.push({ ...quizzQuestion });
+        quizzInformation.questions[i].answers.push({ ...quizzAnswer });
+
+        //Por algum motivo que ainda não consigo entender estão sendo feitos 4 pushs ao mesmo 
+        //tempo ou algo assim na linha 380.
     }
 }
 
@@ -458,14 +465,7 @@ function testQuestionsInfos() {
     testWrongAnswers(wrongAnswerText, wrongAnswerImage);
     rigthAnswerImage.forEach(testUrlImage);
 
-    saveQuestionsInformation();
-}
-
-function saveQuestionsInformation() {
-    for (let i = 0; i < numberOfQuestions; i++) {
-        quizzInformation.questions[i].title = questionsText[i].value;
-        quizzInformation.questions[i].color = questionsColors[i].value;
-    }
+    saveQuestionsInformation(questionsText, questionsColors);
 }
 
 function testQuestionText(questionsText) {
@@ -537,6 +537,41 @@ function testWrongAnswers(wrongAnswerText, wrongAnswerImage) {
             inputValidation.push(false);
         }
 
+        wrongAnswersList.push([...answerComparison]); wrongImagesList.push([...imageComparison]);
+        for (let i = 0; i < wrongAnswersList.length; i++) {
+            wrongAnswersList[i] = wrongAnswersList[i].filter(filterEmptyInputs);
+            wrongImagesList[i] = wrongImagesList[i].filter(filterEmptyInputs);
+        }
         answerComparison = []; imageComparison = [];
+    }
+}
+
+function filterEmptyInputs(wrongInput){
+    if (wrongInput.value !== "") {
+        return wrongInput;
+    }
+}
+
+function saveQuestionsInformation(questionsText, questionsColors) {
+    for (let i = 0; i < numberOfQuestions; i++) {
+        quizzInformation.questions[i].title = questionsText[i].value;
+        quizzInformation.questions[i].color = questionsColors[i].value;
+
+        saveWrongAnswersInformation(i);
+    }
+}
+
+function saveWrongAnswersInformation(i) {
+    for (let j = 0; j < wrongAnswersList[i].length; j++) {
+        quizzInformation.questions[i].answers.push({ ...quizzAnswer });
+    }
+
+    for (let j = 0; j < wrongAnswersList[i].length; j++) {
+        console.log(wrongAnswersList[i].length);
+        console.log(quizzInformation.questions[i].answers[j + 1]);
+        console.log(wrongAnswersList[j]);
+
+        quizzInformation.questions[i].answers[j + 1].text = wrongAnswersList[j][0].value;
+        quizzInformation.questions[i].answers[j + 1].image = wrongImagesList[j][0].value;
     }
 }
