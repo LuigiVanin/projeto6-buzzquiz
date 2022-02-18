@@ -412,21 +412,18 @@ function openLevelsScreen() {
     questionsValidation = resultOfTestingQuizzInfos.filter(
         (element) => element === false
     );
-
+        console.log(questionsValidation)
     if (questionsValidation.length === 0) {
-        document
-            .querySelector(".quizz-form_basic-info-screen")
-            .classList.toggle("hidden");
         document
             .querySelector(".quizz-form_questions-screen")
             .classList.toggle("hidden");
-
-        loadQuestionScreen();
+        document
+            .querySelector(".quizz-form_levels-screen")
+            .classList.toggle("hidden");
     } else {
         alert(
             "Parece que algo deu errado! Por favor,verifique se todos os campos estão preenchidos corretamente."
         );
-        inputValidation = [];
     }
 }
 
@@ -454,7 +451,8 @@ function testQuestionsInfos() {
     testQuestionColors(questionsColors);
     rigthAnswerText.forEach(testRigthAnswerText);
     rigthAnswerImage.forEach(testUrlImage);
-    testWrongAnswerText(wrongAnswerText);
+    testWrongAnswers(wrongAnswerText, wrongAnswerImage);
+    rigthAnswerImage.forEach(testUrlImage);
 }
 
 function testQuestionText(questionsText) {
@@ -487,11 +485,19 @@ function testRigthAnswerText(answerText) {
     }
 }
 
-function testWrongAnswerText(wrongAnswerText) {
-    let answerComparison = []; let wrongAnswerValidation = [];
+function testWrongAnswers(wrongAnswerText, wrongAnswerImage) {
+    let answerComparison = []; let imageComparison = []; let wrongAnswerValidation = [];
+   
     for (let i = 0; i < numberOfQuestions; i++) {
         wrongAnswerText.forEach((answer) => {
             answerComparison.push(answer[i]);
+        });
+
+        wrongAnswerImage.forEach((image) => {
+            imageComparison.push(image[i]);
+            if (image[i].value !== "") {
+                testUrlImage(image[i]);
+            }
         });
 
         answerComparison.forEach((answerText) => {
@@ -502,46 +508,25 @@ function testWrongAnswerText(wrongAnswerText) {
             }
         });
 
+        for(let j = 0 ; j < 3; j++){
+            if ( (imageComparison[j].value === "" && answerComparison[j].value !== "") || (imageComparison[j].value !== "" && answerComparison[j].value === "") ) {
+                inputValidation.push(false);
+            }
+        }
+
         let answerValidation = wrongAnswerValidation.filter(
             (element) => element === true
         );
 
         if (answerValidation.length !== 0) {
             inputValidation.push(true);
-            console.log("true")
         } else {
             inputValidation.push(false);
-            console.log("false")
         }
 
-        answerComparison = [];
+        answerComparison = []; imageComparison = [];
     }
 }
-
-// function testWrongAnswerText(answerText) {
-//     let wrongAnswerValidation = [];
-//     answerText.forEach((answerText) => {
-//         if (answerText.value !== "") {
-//             wrongAnswerValidation.push(true);
-//             console.log("true")
-//         } else {
-//             wrongAnswerValidation.push(false);
-//             console.log("false")
-//         }
-//     });
-
-//     let answerValidation = wrongAnswerValidation.filter(
-//         (element) => element === true
-//     );
-
-//     if (answerValidation.length !== 0) {
-//         inputValidation.push(true);
-//         console.log("true")
-//     }else{
-//         inputValidation.push(false);
-//         console.log("false")
-//     }
-// }
 
 // function testQuestionText(inputValidation, questionsText){
 //     for (let i = 0; i < questionsText.length; i++) {
