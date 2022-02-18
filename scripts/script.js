@@ -453,7 +453,7 @@ function testQuestionsInfos(){
 
 function testQuestionText(inputValidation, questionsText){
     questionsText.forEach( (input) => {
-        if (questionsText.length >= 20) {
+        if (input.value.length >= 20) {
             inputValidation.push(true);
         }else{
             inputValidation.push(false);
@@ -462,11 +462,16 @@ function testQuestionText(inputValidation, questionsText){
 }
 
 function testQuestionColors(inputValidation, questionsColors){
+    const regex = /[0-9a-f]/;
     questionsColors.forEach( (input) => {
-        if (questionsColors) {
+        let resultOfColorFormat = regex.exec(input.value.slice(1));
+        console.log(input.value)
+        if (input.value[0] === "#" && resultOfColorFormat.input.length === 6 && input.value.length === 7) {
             inputValidation.push(true);
+            console.log("true")
         }else{
             inputValidation.push(false);
+            console.log("false")
         }
     });
 }
