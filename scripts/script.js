@@ -282,7 +282,6 @@ function renderResult() {
 
 function openQuestionsScreen() {
     let quizzvalidation = [];
-    // let resultOfTestingQuizzInfos = testBasicInfos();
     testBasicInfos();
     resultOfTestingQuizzInfos = inputValidation;
     quizzvalidation = resultOfTestingQuizzInfos.filter(
@@ -297,6 +296,7 @@ function openQuestionsScreen() {
             .querySelector(".quizz-form_questions-screen")
             .classList.toggle("hidden");
 
+        saveNumberOfQuestionsInfo();
         loadQuestionScreen();
     } else {
         alert(
@@ -371,6 +371,12 @@ function testNumberOfLevels(numberOfLevels) {
     }
 }
 
+function saveNumberOfQuestionsInfo() {
+    for (let i = 0; i < numberOfQuestions; i++) {
+        quizzInformation.questions.push(quizzQuestion);
+    }
+}
+
 function loadQuestionScreen() {
     const questionListHtmlClass = document.querySelector(
         ".quizz-form_questions-screen_question-list"
@@ -403,8 +409,6 @@ function loadQuestionScreen() {
     }
 }
 
-numberOfQuestions = 3; //for testing only; erase later
-
 function openLevelsScreen() {
     let questionsValidation = [];
     testQuestionsInfos();
@@ -412,7 +416,7 @@ function openLevelsScreen() {
     questionsValidation = resultOfTestingQuizzInfos.filter(
         (element) => element === false
     );
-        console.log(questionsValidation)
+    console.log(questionsValidation)
     if (questionsValidation.length === 0) {
         document
             .querySelector(".quizz-form_questions-screen")
@@ -453,6 +457,15 @@ function testQuestionsInfos() {
     rigthAnswerImage.forEach(testUrlImage);
     testWrongAnswers(wrongAnswerText, wrongAnswerImage);
     rigthAnswerImage.forEach(testUrlImage);
+
+    saveQuestionsInformation();
+}
+
+function saveQuestionsInformation() {
+    for (let i = 0; i < numberOfQuestions; i++) {
+        quizzInformation.questions[i].title = questionsText[i].value;
+        quizzInformation.questions[i].color = questionsColors[i].value;
+    }
 }
 
 function testQuestionText(questionsText) {
@@ -487,7 +500,7 @@ function testRigthAnswerText(answerText) {
 
 function testWrongAnswers(wrongAnswerText, wrongAnswerImage) {
     let answerComparison = []; let imageComparison = []; let wrongAnswerValidation = [];
-   
+
     for (let i = 0; i < numberOfQuestions; i++) {
         wrongAnswerText.forEach((answer) => {
             answerComparison.push(answer[i]);
@@ -508,8 +521,8 @@ function testWrongAnswers(wrongAnswerText, wrongAnswerImage) {
             }
         });
 
-        for(let j = 0 ; j < 3; j++){
-            if ( (imageComparison[j].value === "" && answerComparison[j].value !== "") || (imageComparison[j].value !== "" && answerComparison[j].value === "") ) {
+        for (let j = 0; j < 3; j++) {
+            if ((imageComparison[j].value === "" && answerComparison[j].value !== "") || (imageComparison[j].value !== "" && answerComparison[j].value === "")) {
                 inputValidation.push(false);
             }
         }
@@ -527,10 +540,3 @@ function testWrongAnswers(wrongAnswerText, wrongAnswerImage) {
         answerComparison = []; imageComparison = [];
     }
 }
-
-// function testQuestionText(inputValidation, questionsText){
-//     for (let i = 0; i < questionsText.length; i++) {
-//         quizzInformation.questions.push(quizzQuestion);
-//         quizzInformation.questions[i].title = questionsText[i].value;
-//     }
-// }
