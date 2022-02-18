@@ -42,6 +42,7 @@ let selectedQuizzId = null;
 
 let numberOfQuestions;
 let numberOfLevels;
+let inputValidation = [];
 
 const promise = axios.get(`${URL_API}quizzes`);
 promise.then(printQuizzes);
@@ -281,7 +282,9 @@ function renderResult() {
 
 function openQuestionsScreen() {
     let quizzvalidation = [];
-    let resultOfTestingQuizzInfos = testBasicInfos();
+    // let resultOfTestingQuizzInfos = testBasicInfos();
+    testBasicInfos();
+    resultOfTestingQuizzInfos = inputValidation;
     quizzvalidation = resultOfTestingQuizzInfos.filter(
         (element) => element === false
     );
@@ -304,7 +307,7 @@ function openQuestionsScreen() {
 }
 
 function testBasicInfos() {
-    let inputValidation = [];
+    inputValidation = [];
     quizzInformation.title = document.querySelector(
         ".quizz-form_basic-info-screen_quizz-title"
     ).value;
@@ -321,15 +324,13 @@ function testBasicInfos() {
             .value
     );
 
-    testQuizzTitle(inputValidation, quizzInformation.title);
-    testUrlImage(inputValidation, quizzInformation.image);
-    testNumberOfQuestions(inputValidation, numberOfQuestions);
-    testNumberOfLevels(inputValidation, numberOfLevels);
-
-    return inputValidation;
+    testQuizzTitle(quizzInformation.title);
+    testUrlImage(quizzInformation.image);
+    testNumberOfQuestions(numberOfQuestions);
+    testNumberOfLevels(numberOfLevels);
 }
 
-function testQuizzTitle(inputValidation, quizzTitle) {
+function testQuizzTitle(quizzTitle) {
     if (quizzTitle.length >= 20 && quizzTitle.length <= 65) {
         inputValidation.push(true);
     } else {
@@ -337,7 +338,12 @@ function testQuizzTitle(inputValidation, quizzTitle) {
     }
 }
 
-function testUrlImage(inputValidation, urlImage) {
+function testUrlImage(urlImage) {
+    if (typeof(urlImage) !== "string"){
+        urlImage = urlImage.value;
+    }
+
+    console.log(urlImage)
     if (
         urlImage.slice(0, 8) === "https://" &&
         (urlImage.slice(-4) === ".png" ||
@@ -346,12 +352,14 @@ function testUrlImage(inputValidation, urlImage) {
             urlImage.slice(-4) === ".gif")
     ) {
         inputValidation.push(true);
+        console.log("true")
     } else {
         inputValidation.push(false);
+        console.log("false")
     }
 }
 
-function testNumberOfQuestions(inputValidation, numberOfQuestions) {
+function testNumberOfQuestions(numberOfQuestions) {
     if (numberOfQuestions >= 3) {
         inputValidation.push(true);
     } else {
@@ -359,7 +367,7 @@ function testNumberOfQuestions(inputValidation, numberOfQuestions) {
     }
 }
 
-function testNumberOfLevels(inputValidation, numberOfLevels) {
+function testNumberOfLevels(numberOfLevels) {
     if (numberOfLevels >= 2) {
         inputValidation.push(true);
     } else {
@@ -401,7 +409,7 @@ function loadQuestionScreen() {
     }
 }
 
-numberOfQuestions = 3; //for testing only
+numberOfQuestions = 3; //for testing only; erase later
 
 function openLevelsScreen(){
     let questionsValidation = [];
@@ -428,30 +436,28 @@ function openLevelsScreen(){
 }
 
 function testQuestionsInfos(){
-    let inputValidation = [];
-    questionsText = [...document.querySelectorAll(".question-text")];
-    questionsColors = [...document.querySelectorAll(".question-color")];
-    rigthAnswerText = [...document.querySelectorAll(".question-right-answer-text")];
-    rigthAnswerImage = [...document.querySelectorAll(".question-right-answer-image")];
+    inputValidation = [];
+    let questionsText = [...document.querySelectorAll(".question-text")];
+    let questionsColors = [...document.querySelectorAll(".question-color")];
+    let rigthAnswerText = [...document.querySelectorAll(".question-right-answer-text")];
+    let rigthAnswerImage = [...document.querySelectorAll(".question-right-answer-image")];
 
-    wrongAnswer1Text = [...document.querySelectorAll(".question-wrong-answer1-text")];
-    wrongAnswer1Image = [...document.querySelectorAll(".question-wrong-answer1-image")];
+    let wrongAnswer1Text = [...document.querySelectorAll(".question-wrong-answer1-text")];
+    let wrongAnswer1Image = [...document.querySelectorAll(".question-wrong-answer1-image")];
 
-    wrongAnswer2Text = [...document.querySelectorAll(".question-wrong-answer2-text")];
-    wrongAnswer2Image = [...document.querySelectorAll(".question-wrong-answer2-image")];
+    let wrongAnswer2Text = [...document.querySelectorAll(".question-wrong-answer2-text")];
+    let wrongAnswer2Image = [...document.querySelectorAll(".question-wrong-answer2-image")];
 
-    wrongAnswer3Text = [...document.querySelectorAll(".question-wrong-answer3-text")];
-    wrongAnswer3Image = [...document.querySelectorAll(".question-wrong-answer3-image")];
+    let wrongAnswer3Text = [...document.querySelectorAll(".question-wrong-answer3-text")];
+    let wrongAnswer3Image = [...document.querySelectorAll(".question-wrong-answer3-image")];
 
-    testQuestionText(inputValidation, questionsText);
-    testQuestionColors(inputValidation, questionsColors);
-    testRigthAnswerText(inputValidation, rigthAnswerText);
-    testRigthAnswerImage(inputValidation, rigthAnswerImage);
-
-    return inputValidation;
+    testQuestionText(questionsText);
+    testQuestionColors(questionsColors);
+    testRigthAnswerText(rigthAnswerText);
+    rigthAnswerImage.forEach(testUrlImage);
 }
 
-function testQuestionText(inputValidation, questionsText){
+function testQuestionText(questionsText){
     questionsText.forEach( (input) => {
         if (input.value.length >= 20) {
             inputValidation.push(true);
@@ -461,17 +467,14 @@ function testQuestionText(inputValidation, questionsText){
     });
 }
 
-function testQuestionColors(inputValidation, questionsColors){
+function testQuestionColors(questionsColors){
     const regex = /[0-9a-f]/;
     questionsColors.forEach( (input) => {
         let resultOfColorFormat = regex.exec(input.value.slice(1));
-        console.log(input.value)
         if (input.value[0] === "#" && resultOfColorFormat.input.length === 6 && input.value.length === 7) {
             inputValidation.push(true);
-            console.log("true")
         }else{
             inputValidation.push(false);
-            console.log("false")
         }
     });
 }
