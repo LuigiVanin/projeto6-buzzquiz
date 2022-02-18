@@ -378,25 +378,102 @@ function loadQuestionScreen() {
         
         <div class="quizz-form_questions-screen_question-num">
             <p>Pergunta ${i}</p>
-            <input type="text" placeholder="Texto da pergunta">
-            <input type="text" placeholder="Cor de fundo da pergunta">
+            <input type="text" placeholder="Texto da pergunta" class="question-text">
+            <input type="text" placeholder="Cor de fundo da pergunta" class="question-color">
             <p>Resposta correta</p>
-            <input type="text" placeholder="Resposta correta">
-            <input type="text" placeholder="URL da imagem">
+            <input type="text" placeholder="Resposta correta" class="question-right-answer-text">
+            <input type="text" placeholder="URL da imagem" class="question-right-answer-image">
             <p>Respostas incorretas</p>
-            <div class="quizz-form_questions-screen_wrong-answer">
-                <input type="text" placeholder="Resposta incorreta 1">
-                <input type="text" placeholder="URL da imagem 1">
+            <div class="quizz-form_questions-screen_wrong-answer1">
+                <input type="text" placeholder="Resposta incorreta 1" class="question-wrong-answer1-text">
+                <input type="text" placeholder="URL da imagem 1" class="question-wrong-answer1-image">
             </div>
-            <div class="quizz-form_questions-screen_wrong-answer">
-                <input type="text" placeholder="Resposta incorreta 2">
-                <input type="text" placeholder="URL da imagem 2">
+            <div class="quizz-form_questions-screen_wrong-answer2">
+                <input type="text" placeholder="Resposta incorreta 2" class="question-wrong-answer2-text">
+                <input type="text" placeholder="URL da imagem 2" class="question-wrong-answer2-image">
             </div>
-            <div class="quizz-form_questions-screen_wrong-answer">
-                <input type="text" placeholder="Resposta incorreta 3">
-                <input type="text" placeholder="URL da imagem 3">
+            <div class="quizz-form_questions-screen_wrong-answer3">
+                <input type="text" placeholder="Resposta incorreta 3" class="question-wrong-answer3-text">
+                <input type="text" placeholder="URL da imagem 3" class="question-wrong-answer3-image">
             </div>
         </div>
         `;
     }
 }
+
+numberOfQuestions = 3; //for testing only
+
+function openLevelsScreen(){
+    let questionsValidation = [];
+    let resultOfTestingQuizzInfos = testQuestionsInfos();
+    questionsValidation = resultOfTestingQuizzInfos.filter(
+        (element) => element === false
+    );
+
+    if (questionsValidation.length === 0) {
+        document
+            .querySelector(".quizz-form_basic-info-screen")
+            .classList.toggle("hidden");
+        document
+            .querySelector(".quizz-form_questions-screen")
+            .classList.toggle("hidden");
+
+        console.log(numberOfQuestions);
+        loadQuestionScreen();
+    } else {
+        alert(
+            "Parece que algo deu errado! Por favor,verifique se todos os campos estão preenchidos corretamente."
+        );
+    }
+}
+
+function testQuestionsInfos(){
+    let inputValidation = [];
+    questionsText = [...document.querySelectorAll(".question-text")];
+    questionsColors = [...document.querySelectorAll(".question-color")];
+    rigthAnswerText = [...document.querySelectorAll(".question-right-answer-text")];
+    rigthAnswerImage = [...document.querySelectorAll(".question-right-answer-image")];
+
+    wrongAnswer1Text = [...document.querySelectorAll(".question-wrong-answer1-text")];
+    wrongAnswer1Image = [...document.querySelectorAll(".question-wrong-answer1-image")];
+
+    wrongAnswer2Text = [...document.querySelectorAll(".question-wrong-answer2-text")];
+    wrongAnswer2Image = [...document.querySelectorAll(".question-wrong-answer2-image")];
+
+    wrongAnswer3Text = [...document.querySelectorAll(".question-wrong-answer3-text")];
+    wrongAnswer3Image = [...document.querySelectorAll(".question-wrong-answer3-image")];
+
+    testQuestionText(inputValidation, questionsText);
+    testQuestionColors(inputValidation, questionsColors);
+    testRigthAnswerText(inputValidation, rigthAnswerText);
+    testRigthAnswerImage(inputValidation, rigthAnswerImage);
+
+    return inputValidation;
+}
+
+function testQuestionText(inputValidation, questionsText){
+    questionsText.forEach( (input) => {
+        if (questionsText.length >= 20) {
+            inputValidation.push(true);
+        }else{
+            inputValidation.push(false);
+        }
+    });
+}
+
+function testQuestionColors(inputValidation, questionsColors){
+    questionsColors.forEach( (input) => {
+        if (questionsColors) {
+            inputValidation.push(true);
+        }else{
+            inputValidation.push(false);
+        }
+    });
+}
+
+// function testQuestionText(inputValidation, questionsText){
+//     for (let i = 0; i < questionsText.length; i++) {
+//         quizzInformation.questions.push(quizzQuestion);
+//         quizzInformation.questions[i].title = questionsText[i].value;
+//     }
+// }
