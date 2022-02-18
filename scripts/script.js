@@ -297,7 +297,6 @@ function openQuestionsScreen() {
             .querySelector(".quizz-form_questions-screen")
             .classList.toggle("hidden");
 
-        console.log(numberOfQuestions);
         loadQuestionScreen();
     } else {
         alert(
@@ -343,7 +342,6 @@ function testUrlImage(urlImage) {
         urlImage = urlImage.value;
     }
 
-    console.log(urlImage)
     if (
         urlImage.slice(0, 8) === "https://" &&
         (urlImage.slice(-4) === ".png" ||
@@ -352,10 +350,8 @@ function testUrlImage(urlImage) {
             urlImage.slice(-4) === ".gif")
     ) {
         inputValidation.push(true);
-        console.log("true")
     } else {
         inputValidation.push(false);
-        console.log("false")
     }
 }
 
@@ -379,9 +375,7 @@ function loadQuestionScreen() {
     const questionListHtmlClass = document.querySelector(
         ".quizz-form_questions-screen_question-list"
     );
-    console.log(questionListHtmlClass);
     for (let i = 1; i <= numberOfQuestions; i++) {
-        console.log("Entrei");
         questionListHtmlClass.innerHTML += `
         
         <div class="quizz-form_questions-screen_question-num">
@@ -413,7 +407,8 @@ numberOfQuestions = 3; //for testing only; erase later
 
 function openLevelsScreen(){
     let questionsValidation = [];
-    let resultOfTestingQuizzInfos = testQuestionsInfos();
+    testQuestionsInfos();
+    resultOfTestingQuizzInfos = inputValidation;
     questionsValidation = resultOfTestingQuizzInfos.filter(
         (element) => element === false
     );
@@ -426,7 +421,6 @@ function openLevelsScreen(){
             .querySelector(".quizz-form_questions-screen")
             .classList.toggle("hidden");
 
-        console.log(numberOfQuestions);
         loadQuestionScreen();
     } else {
         alert(
@@ -453,7 +447,7 @@ function testQuestionsInfos(){
 
     testQuestionText(questionsText);
     testQuestionColors(questionsColors);
-    testRigthAnswerText(rigthAnswerText);
+    rigthAnswerText.forEach(testRigthAnswerText);
     rigthAnswerImage.forEach(testUrlImage);
 }
 
@@ -477,6 +471,16 @@ function testQuestionColors(questionsColors){
             inputValidation.push(false);
         }
     });
+}
+
+function testRigthAnswerText(answerText){
+    if (answerText.value !== "") {
+        inputValidation.push(true);
+        console.log("true")
+    }else{
+        inputValidation.push(false);
+        console.log("false")
+    }
 }
 
 // function testQuestionText(inputValidation, questionsText){
