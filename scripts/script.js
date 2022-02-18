@@ -338,7 +338,7 @@ function testQuizzTitle(quizzTitle) {
 }
 
 function testUrlImage(urlImage) {
-    if (typeof(urlImage) !== "string"){
+    if (typeof (urlImage) !== "string") {
         urlImage = urlImage.value;
     }
 
@@ -405,7 +405,7 @@ function loadQuestionScreen() {
 
 numberOfQuestions = 3; //for testing only; erase later
 
-function openLevelsScreen(){
+function openLevelsScreen() {
     let questionsValidation = [];
     testQuestionsInfos();
     resultOfTestingQuizzInfos = inputValidation;
@@ -426,10 +426,11 @@ function openLevelsScreen(){
         alert(
             "Parece que algo deu errado! Por favor,verifique se todos os campos estão preenchidos corretamente."
         );
+        inputValidation = [];
     }
 }
 
-function testQuestionsInfos(){
+function testQuestionsInfos() {
     inputValidation = [];
     let questionsText = [...document.querySelectorAll(".question-text")];
     let questionsColors = [...document.querySelectorAll(".question-color")];
@@ -445,43 +446,102 @@ function testQuestionsInfos(){
     let wrongAnswer3Text = [...document.querySelectorAll(".question-wrong-answer3-text")];
     let wrongAnswer3Image = [...document.querySelectorAll(".question-wrong-answer3-image")];
 
+    let wrongAnswerText = [wrongAnswer1Text, wrongAnswer2Text, wrongAnswer3Text];
+    let wrongAnswerImage = [wrongAnswer1Image, wrongAnswer2Image, wrongAnswer3Image];
+
+
     testQuestionText(questionsText);
     testQuestionColors(questionsColors);
     rigthAnswerText.forEach(testRigthAnswerText);
     rigthAnswerImage.forEach(testUrlImage);
+    testWrongAnswerText(wrongAnswerText);
 }
 
-function testQuestionText(questionsText){
-    questionsText.forEach( (input) => {
+function testQuestionText(questionsText) {
+    questionsText.forEach((input) => {
         if (input.value.length >= 20) {
             inputValidation.push(true);
-        }else{
+        } else {
             inputValidation.push(false);
         }
     });
 }
 
-function testQuestionColors(questionsColors){
+function testQuestionColors(questionsColors) {
     const regex = /[0-9a-f]/;
-    questionsColors.forEach( (input) => {
+    questionsColors.forEach((input) => {
         let resultOfColorFormat = regex.exec(input.value.slice(1));
         if (input.value[0] === "#" && resultOfColorFormat.input.length === 6 && input.value.length === 7) {
             inputValidation.push(true);
-        }else{
+        } else {
             inputValidation.push(false);
         }
     });
 }
 
-function testRigthAnswerText(answerText){
+function testRigthAnswerText(answerText) {
     if (answerText.value !== "") {
         inputValidation.push(true);
-        console.log("true")
-    }else{
+    } else {
         inputValidation.push(false);
-        console.log("false")
     }
 }
+
+function testWrongAnswerText(wrongAnswerText) {
+    let answerComparison = []; let wrongAnswerValidation = [];
+    for (let i = 0; i < numberOfQuestions; i++) {
+        wrongAnswerText.forEach((answer) => {
+            answerComparison.push(answer[i]);
+        });
+
+        answerComparison.forEach((answerText) => {
+            if (answerText.value !== "") {
+                wrongAnswerValidation.push(true);
+            } else {
+                wrongAnswerValidation.push(false);
+            }
+        });
+
+        let answerValidation = wrongAnswerValidation.filter(
+            (element) => element === true
+        );
+
+        if (answerValidation.length !== 0) {
+            inputValidation.push(true);
+            console.log("true")
+        } else {
+            inputValidation.push(false);
+            console.log("false")
+        }
+
+        answerComparison = [];
+    }
+}
+
+// function testWrongAnswerText(answerText) {
+//     let wrongAnswerValidation = [];
+//     answerText.forEach((answerText) => {
+//         if (answerText.value !== "") {
+//             wrongAnswerValidation.push(true);
+//             console.log("true")
+//         } else {
+//             wrongAnswerValidation.push(false);
+//             console.log("false")
+//         }
+//     });
+
+//     let answerValidation = wrongAnswerValidation.filter(
+//         (element) => element === true
+//     );
+
+//     if (answerValidation.length !== 0) {
+//         inputValidation.push(true);
+//         console.log("true")
+//     }else{
+//         inputValidation.push(false);
+//         console.log("false")
+//     }
+// }
 
 // function testQuestionText(inputValidation, questionsText){
 //     for (let i = 0; i < questionsText.length; i++) {
