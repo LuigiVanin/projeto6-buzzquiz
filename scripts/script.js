@@ -381,6 +381,10 @@ function saveNumberOfQuestionsInfo() {
 
         //Por algum motivo que ainda não consigo entender estão sendo feitos 4 pushs ao mesmo
         //tempo ou algo assim na linha 380.
+
+        // Vanin: por alguma razão quando vc faz o push com ...obj duas vezes, um dentro de outro objeto, como vc tá fzendo,
+        // aquele bug que a gente tava tendo volta a acontecer 😔, por isso que vc tá experienciando isso, de novo... testei pelo console
+        // também não sei como resolver 😔
     }
 }
 
@@ -416,6 +420,10 @@ function loadQuestionScreen() {
     }
 }
 
+function renderEndScreen() {
+    document.querySelector(".quizz-form_end-screen").classList.remove("hidden");
+}
+
 function openLevelsScreen() {
     let questionsValidation = [];
     testQuestionsInfos();
@@ -439,9 +447,39 @@ function openLevelsScreen() {
     }
 }
 
+function saveLevelsInformation() {
+    quizzInformation.levels = [];
+    let validationError = false;
+    let levels = [...document.querySelectorAll(".inputs-field")];
+    const levelsForm = { ...quizzLevel };
+    levels.forEach((level) => {
+        let inputs = [...level.querySelectorAll("input, textarea")];
+        inputs.forEach((input, idx) => {
+            if (input.value === "") {
+                validationError = true;
+            }
+        });
+        if (!validationError) {
+            levelsForm.title = inputs[0].value;
+            levelsForm.image = inputs[1].value;
+            levelsForm.minValue = inputs[2].value;
+            levelsForm.text = inputs[3].value;
+            quizzInformation.levels.push({ ...levelsForm });
+        }
+    });
+    if (validationError) {
+        alert(
+            "Parece que algo deu errado! Por favor,verifique se todos os campos estão preenchidos corretamente."
+        );
+        return;
+    }
+    document.querySelector(".quizz-form_levels-screen").classList.add("hidden");
+    renderEndScreen();
+}
+
 function toggleLevelForm(idx) {
-    let element = document.querySelectorAll(".level-form")[idx];
-    let inputField = element.querySelector(".inputs-field");
+    const element = document.querySelectorAll(".level-form")[idx];
+    const inputField = element.querySelector(".inputs-field");
     element.querySelector("ion-icon").classList.toggle("hidden");
     inputField.classList.toggle("hidden");
 }
@@ -449,7 +487,7 @@ function toggleLevelForm(idx) {
 function renderLevelsScreen() {
     let levelScreen = document.querySelector(".quizz-form_levels-screen_main");
     if (numberOfLevels === 0) {
-        numberOfLevels = 2;
+        numberOfLevels = 3;
     }
     levelScreen.innerHTML += ``;
     for (let i = 0; i < numberOfLevels; i++) {
@@ -460,8 +498,8 @@ function renderLevelsScreen() {
         }</span><ion-icon name="create-sharp"></ion-icon></h1>
         <div class="inputs-field hidden">
             <input type="text" placeholder="Título do nível">
-            <input type="text" placeholder="% mínima de acertos">
-            <input type="text" placeholder="URL da imagem do nível">
+            <input type="number" placeholder="% mínima de acertos">
+            <input type="url" placeholder="URL da imagem do nível">
             <textarea placeholder="Describe yourself here..."></textarea>
         </div>
         `;
@@ -469,7 +507,7 @@ function renderLevelsScreen() {
 
     levelScreen.innerHTML += `
     <div class="nav-box">
-        <button onclick="" class="restart">Finalizar Quizz</button>
+        <button onclick="saveLevelsInformation()" class="restart">Finalizar Quizz</button>
     </div>
     `;
 }
