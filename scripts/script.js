@@ -228,7 +228,7 @@ function restartData() {
     quizzLevels = null;
 }
 
-function backToHome() {
+function fromViewBackToHome() {
     restartData();
     document.querySelector(".quizz-view_main").remove();
     document.querySelector(
@@ -274,7 +274,7 @@ function renderResult() {
     mainColumn.innerHTML += `
     <div class="nav-box">
         <button onclick="restartQuizz()" class="restart">Reiniciar Quizz</button>
-        <button onclick="backToHome()">Voltar para a home</button>
+        <button onclick="fromViewBackToHome">Voltar para a home</button>
     </div>
     `;
 
@@ -447,26 +447,68 @@ function openLevelsScreen() {
     }
 }
 
+function urlValidationCheck(urlImage) {
+    if (
+        urlImage.slice(0, 8) === "https://" &&
+        (urlImage.slice(-4) === ".png" ||
+            urlImage.slice(-4) === ".jpg" ||
+            urlImage.slice(-5) === ".jpeg" ||
+            urlImage.slice(-4) === ".gif")
+    ) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function lengthValidation(number, min, max = Infinity) {
+    if (number > max || number < min) {
+        return false;
+    }
+    return true;
+}
+
+// (idx === 1 &&
+//!lengthValidation(parseInt(input.value), 0, 100)) ||
+
+// ||
+// (idx === 3 && !lengthValidation(input.value.length), 30)
+
 function saveLevelsInformation() {
     quizzInformation.levels = [];
     let validationError = false;
+    let minValueZeroValidation = false;
     let levels = [...document.querySelectorAll(".inputs-field")];
     const levelsForm = { ...quizzLevel };
     levels.forEach((level) => {
         let inputs = [...level.querySelectorAll("input, textarea")];
         inputs.forEach((input, idx) => {
-            if (input.value === "") {
+            if (
+                input.value === "" ||
+                (idx === 2 && !urlValidationCheck(input.value)) ||
+                (idx === 0 && !lengthValidation(input.value.length, 10)) ||
+                (idx === 1 &&
+                    !lengthValidation(parseInt(input.value), 0, 100)) ||
+                (idx === 3 && !lengthValidation(input.value.length, 30))
+            ) {
                 validationError = true;
+            }
+            if (idx === 1 && parseInt(input.value) === 0) {
+                minValueZeroValidation = true;
             }
         });
         if (!validationError) {
             levelsForm.title = inputs[0].value;
-            levelsForm.image = inputs[1].value;
-            levelsForm.minValue = inputs[2].value;
+            levelsForm.minValue = inputs[1].value;
+            levelsForm.image = inputs[2].value;
             levelsForm.text = inputs[3].value;
             quizzInformation.levels.push({ ...levelsForm });
         }
     });
+    console.log(minValueZeroValidation);
+    if (!minValueZeroValidation) {
+        validationError = true;
+    }
     if (validationError) {
         alert(
             "Parece que algo deu errado! Por favor,verifique se todos os campos estão preenchidos corretamente."
@@ -487,7 +529,7 @@ function toggleLevelForm(idx) {
 function renderLevelsScreen() {
     let levelScreen = document.querySelector(".quizz-form_levels-screen_main");
     if (numberOfLevels === 0) {
-        numberOfLevels = 3;
+        numberOfLevels = 2;
     }
     levelScreen.innerHTML += ``;
     for (let i = 0; i < numberOfLevels; i++) {
