@@ -468,12 +468,6 @@ function lengthValidation(number, min, max = Infinity) {
     return true;
 }
 
-// (idx === 1 &&
-//!lengthValidation(parseInt(input.value), 0, 100)) ||
-
-// ||
-// (idx === 3 && !lengthValidation(input.value.length), 30)
-
 function saveLevelsInformation() {
     quizzInformation.levels = [];
     let validationError = false;
@@ -517,6 +511,15 @@ function saveLevelsInformation() {
     }
     document.querySelector(".quizz-form_levels-screen").classList.add("hidden");
     renderEndScreen();
+}
+
+function fromFormBackToHome() {
+    document.querySelector(".quizz-form_end-screen").classList.add("hidden");
+    document
+        .querySelector(".quizz-form_basic-info-screen")
+        .classList.remove("hidden");
+    document.querySelector(".quizz-form").classList.add("hidden");
+    document.querySelector(".home").classList.remove("hidden");
 }
 
 function toggleLevelForm(idx) {
