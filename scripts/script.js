@@ -41,7 +41,7 @@ let totalQuestions = 0;
 let selectedQuizzId = null;
 
 let numberOfQuestions;
-let numberOfLevels;
+let numberOfLevels = 0;
 let inputValidation = [];
 let wrongAnswersList = [];
 let wrongImagesList = [];
@@ -340,7 +340,7 @@ function testQuizzTitle(quizzTitle) {
 }
 
 function testUrlImage(urlImage) {
-    if (typeof (urlImage) !== "string") {
+    if (typeof urlImage !== "string") {
         urlImage = urlImage.value;
     }
 
@@ -379,7 +379,7 @@ function saveNumberOfQuestionsInfo() {
         quizzInformation.questions.push({ ...quizzQuestion });
         quizzInformation.questions[i].answers.push({ ...quizzAnswer });
 
-        //Por algum motivo que ainda não consigo entender estão sendo feitos 4 pushs ao mesmo 
+        //Por algum motivo que ainda não consigo entender estão sendo feitos 4 pushs ao mesmo
         //tempo ou algo assim na linha 380.
     }
 }
@@ -423,7 +423,7 @@ function openLevelsScreen() {
     questionsValidation = resultOfTestingQuizzInfos.filter(
         (element) => element === false
     );
-    console.log(questionsValidation)
+    console.log(questionsValidation);
     if (questionsValidation.length === 0) {
         document
             .querySelector(".quizz-form_questions-screen")
@@ -431,6 +431,7 @@ function openLevelsScreen() {
         document
             .querySelector(".quizz-form_levels-screen")
             .classList.toggle("hidden");
+        renderLevelsScreen();
     } else {
         alert(
             "Parece que algo deu errado! Por favor,verifique se todos os campos estão preenchidos corretamente."
@@ -438,25 +439,83 @@ function openLevelsScreen() {
     }
 }
 
+function toggleLevelForm(idx) {
+    let element = document.querySelectorAll(".level-form")[idx];
+    let inputField = element.querySelector(".inputs-field");
+    element.querySelector("ion-icon").classList.toggle("hidden");
+    inputField.classList.toggle("hidden");
+}
+
+function renderLevelsScreen() {
+    let levelScreen = document.querySelector(".quizz-form_levels-screen_main");
+    if (numberOfLevels === 0) {
+        numberOfLevels = 2;
+    }
+    levelScreen.innerHTML += ``;
+    for (let i = 0; i < numberOfLevels; i++) {
+        levelScreen.innerHTML += `
+        <div class="level-form">
+        <h1 onclick="toggleLevelForm(${i})"><span>Nível ${
+            i + 1
+        }</span><ion-icon name="create-sharp"></ion-icon></h1>
+        <div class="inputs-field hidden">
+            <input type="text" placeholder="Título do nível">
+            <input type="text" placeholder="% mínima de acertos">
+            <input type="text" placeholder="URL da imagem do nível">
+            <textarea placeholder="Describe yourself here..."></textarea>
+        </div>
+        `;
+    }
+
+    levelScreen.innerHTML += `
+    <div class="nav-box">
+        <button onclick="" class="restart">Finalizar Quizz</button>
+    </div>
+    `;
+}
+
 function testQuestionsInfos() {
     inputValidation = [];
     let questionsText = [...document.querySelectorAll(".question-text")];
     let questionsColors = [...document.querySelectorAll(".question-color")];
-    let rigthAnswerText = [...document.querySelectorAll(".question-right-answer-text")];
-    let rigthAnswerImage = [...document.querySelectorAll(".question-right-answer-image")];
+    let rigthAnswerText = [
+        ...document.querySelectorAll(".question-right-answer-text"),
+    ];
+    let rigthAnswerImage = [
+        ...document.querySelectorAll(".question-right-answer-image"),
+    ];
 
-    let wrongAnswer1Text = [...document.querySelectorAll(".question-wrong-answer1-text")];
-    let wrongAnswer1Image = [...document.querySelectorAll(".question-wrong-answer1-image")];
+    let wrongAnswer1Text = [
+        ...document.querySelectorAll(".question-wrong-answer1-text"),
+    ];
+    let wrongAnswer1Image = [
+        ...document.querySelectorAll(".question-wrong-answer1-image"),
+    ];
 
-    let wrongAnswer2Text = [...document.querySelectorAll(".question-wrong-answer2-text")];
-    let wrongAnswer2Image = [...document.querySelectorAll(".question-wrong-answer2-image")];
+    let wrongAnswer2Text = [
+        ...document.querySelectorAll(".question-wrong-answer2-text"),
+    ];
+    let wrongAnswer2Image = [
+        ...document.querySelectorAll(".question-wrong-answer2-image"),
+    ];
 
-    let wrongAnswer3Text = [...document.querySelectorAll(".question-wrong-answer3-text")];
-    let wrongAnswer3Image = [...document.querySelectorAll(".question-wrong-answer3-image")];
+    let wrongAnswer3Text = [
+        ...document.querySelectorAll(".question-wrong-answer3-text"),
+    ];
+    let wrongAnswer3Image = [
+        ...document.querySelectorAll(".question-wrong-answer3-image"),
+    ];
 
-    let wrongAnswerText = [wrongAnswer1Text, wrongAnswer2Text, wrongAnswer3Text];
-    let wrongAnswerImage = [wrongAnswer1Image, wrongAnswer2Image, wrongAnswer3Image];
-
+    let wrongAnswerText = [
+        wrongAnswer1Text,
+        wrongAnswer2Text,
+        wrongAnswer3Text,
+    ];
+    let wrongAnswerImage = [
+        wrongAnswer1Image,
+        wrongAnswer2Image,
+        wrongAnswer3Image,
+    ];
 
     testQuestionText(questionsText);
     testQuestionColors(questionsColors);
@@ -482,7 +541,11 @@ function testQuestionColors(questionsColors) {
     const regex = /[0-9a-f]/;
     questionsColors.forEach((input) => {
         let resultOfColorFormat = regex.exec(input.value.slice(1));
-        if (input.value[0] === "#" && resultOfColorFormat.input.length === 6 && input.value.length === 7) {
+        if (
+            input.value[0] === "#" &&
+            resultOfColorFormat.input.length === 6 &&
+            input.value.length === 7
+        ) {
             inputValidation.push(true);
         } else {
             inputValidation.push(false);
@@ -499,7 +562,9 @@ function testRigthAnswerText(answerText) {
 }
 
 function testWrongAnswers(wrongAnswerText, wrongAnswerImage) {
-    let answerComparison = []; let imageComparison = []; let wrongAnswerValidation = [];
+    let answerComparison = [];
+    let imageComparison = [];
+    let wrongAnswerValidation = [];
 
     for (let i = 0; i < numberOfQuestions; i++) {
         wrongAnswerText.forEach((answer) => {
@@ -522,7 +587,12 @@ function testWrongAnswers(wrongAnswerText, wrongAnswerImage) {
         });
 
         for (let j = 0; j < 3; j++) {
-            if ((imageComparison[j].value === "" && answerComparison[j].value !== "") || (imageComparison[j].value !== "" && answerComparison[j].value === "")) {
+            if (
+                (imageComparison[j].value === "" &&
+                    answerComparison[j].value !== "") ||
+                (imageComparison[j].value !== "" &&
+                    answerComparison[j].value === "")
+            ) {
                 inputValidation.push(false);
             }
         }
@@ -537,16 +607,18 @@ function testWrongAnswers(wrongAnswerText, wrongAnswerImage) {
             inputValidation.push(false);
         }
 
-        wrongAnswersList.push([...answerComparison]); wrongImagesList.push([...imageComparison]);
+        wrongAnswersList.push([...answerComparison]);
+        wrongImagesList.push([...imageComparison]);
         for (let i = 0; i < wrongAnswersList.length; i++) {
             wrongAnswersList[i] = wrongAnswersList[i].filter(filterEmptyInputs);
             wrongImagesList[i] = wrongImagesList[i].filter(filterEmptyInputs);
         }
-        answerComparison = []; imageComparison = [];
+        answerComparison = [];
+        imageComparison = [];
     }
 }
 
-function filterEmptyInputs(wrongInput){
+function filterEmptyInputs(wrongInput) {
     if (wrongInput.value !== "") {
         return wrongInput;
     }
@@ -571,7 +643,9 @@ function saveWrongAnswersInformation(i) {
         console.log(quizzInformation.questions[i].answers[j + 1]);
         console.log(wrongAnswersList[j]);
 
-        quizzInformation.questions[i].answers[j + 1].text = wrongAnswersList[j][0].value;
-        quizzInformation.questions[i].answers[j + 1].image = wrongImagesList[j][0].value;
+        quizzInformation.questions[i].answers[j + 1].text =
+            wrongAnswersList[j][0].value;
+        quizzInformation.questions[i].answers[j + 1].image =
+            wrongImagesList[j][0].value;
     }
 }
