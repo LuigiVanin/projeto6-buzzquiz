@@ -52,10 +52,32 @@
     flex-direction: column;
 }
 
-.quizz-form_questions-screen > p {
+.quizz-form_questions-screen p{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     font-size: 20px;
     font-weight: bold;
     margin: calc(var(--header-height) + 50px) auto 50px auto;
+}
+
+.quizz-form_questions-screen h1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 17px 0 12px 0;
+}
+
+.quizz-form_questions-screen ion-icon {
+    font-size: 25px;
+    padding-bottom: 5px;
+}
+
+.quizz-form_questions-screen_inputs-field {
+    display: flex;
+    flex-direction: column;
 }
 
 .quizz-form_questions-screen_question-num {
