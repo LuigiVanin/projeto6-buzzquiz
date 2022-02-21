@@ -44,7 +44,7 @@ p {
 
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: calc(var(--answer-gap) + 5px);
     padding-top: 25px;
     padding-bottom: 65px;
 }
@@ -188,4 +188,56 @@ p {
 .nav-box button.restart {
     background-color: var(--main-color);
     color: white;
+}
+
+@media (min-width: 759px) {
+    .quizz-view_main {
+        align-items: center;
+    }
+
+    .quizz-box {
+        width: 759px;
+    }
+
+    .quizz-box .title {
+        font-size: 23px;
+    }
+
+    .answers p {
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 23px;
+    }
+
+    .answer {
+        cursor: pointer;
+    }
+
+    .quizz-result {
+        width: 759px;
+    }
+
+    .quizz-result .desc {
+        width: 100%;
+        position: relative;
+        display: flex;
+        gap: 10px;
+    }
+
+    .quizz-result.show img {
+        width: 50%;
+    }
+
+    .quizz-result.show p {
+        width: 50%;
+    }
+
+    button {
+        cursor: pointer;
+    }
+
+    :root {
+        --answer-gap: 20px;
+        --image-width: 349px;
+    }
 }

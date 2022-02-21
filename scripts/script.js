@@ -265,8 +265,10 @@ function renderResult() {
 
     resultArea.innerHTML = `
     <h1 class="title">${result}% de acerto: ${myLevel.title}</h1>
+    <div class="desc">
     <img src="${myLevel.image}">
     <p>${myLevel.text}</p>
+    </div>
     `;
 
     mainColumn.innerHTML += `
