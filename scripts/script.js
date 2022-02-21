@@ -65,7 +65,7 @@ function printUserQuizzes() {
         storedUserQuizzes.forEach((element) => {
             userQuizzesHtmlClass += `
 
-            <article class="home_quizz" onclick="openQuizzView()">
+            <article class="home_quizz" onclick="openQuizzView()" data-identifier="quizz-card">
                 <img src="${element.image}" alt="">
                 <div class="home_quizz_gradient"></div>
                 <p>${element.title}</p>
@@ -80,7 +80,7 @@ function printNonUserQuizzes(response) {
     nonUserQuizzesList.forEach((element) => {
         nonUserQuizzesHtmlCLass.innerHTML += `
 
-        <article class="home_quizz" onclick = "openQuizzView('${element.id}')" >
+        <article class="home_quizz" onclick = "openQuizzView('${element.id}')"  data-identifier="quizz-card">
             <img src="${element.image}" alt="">
             <div class="home_quizz_gradient"></div>
             <p>${element.title}</p>
@@ -146,14 +146,14 @@ function renderQuizzQuestions(questions) {
     questions.forEach((element, i) => {
         main.innerHTML += `
         <div class="quizz-box">
-            <h1 class="title"></h1>
+            <h1 class="title" data-identifier="question"></h1>
             <div class="answers"></div>
         </div>`;
         renderQuestion(element, i);
     });
 
     main.innerHTML += `
-    <div class="quizz-result">
+    <div class="quizz-result" data-identifier="quizz-result">
     </div>
     `;
 }
@@ -174,7 +174,7 @@ function renderQuestionAnswers(answers, questionIndex) {
             correctClass = "correct";
         }
         answersBox.innerHTML += `
-        <div class="answer" onclick="selectAnswer('${questionIndex}', ${ans.isCorrectAnswer}, this)">
+        <div class="answer" onclick="selectAnswer('${questionIndex}', ${ans.isCorrectAnswer}, this)" data-identifier="answer">
             <div class="image"></div>
             <p class="${correctClass}">${ans.text}</p>
         </div>
