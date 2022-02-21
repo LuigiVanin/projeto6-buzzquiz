@@ -274,7 +274,7 @@ function renderResult() {
     mainColumn.innerHTML += `
     <div class="nav-box">
         <button onclick="restartQuizz()" class="restart">Reiniciar Quizz</button>
-        <button onclick="fromViewBackToHome">Voltar para a home</button>
+        <button onclick="fromViewBackToHome()">Voltar para a home</button>
     </div>
     `;
 
@@ -420,8 +420,29 @@ function loadQuestionScreen() {
     }
 }
 
-function renderEndScreen() {
-    document.querySelector(".quizz-form_end-screen").classList.remove("hidden");
+function fromFormBackToHome() {
+    document.querySelector(".quizz-form_end-screen").classList.add("hidden");
+    document
+        .querySelector(".quizz-form_basic-info-screen")
+        .classList.remove("hidden");
+    document.querySelector(".quizz-form").classList.add("hidden");
+    document.querySelector(".home").classList.remove("hidden");
+}
+
+function renderEndScreen(response) {
+    if (response === null) {
+        fromFormBackToHome();
+        return;
+    }
+    const endScreen = document.querySelector(".quizz-form_end-screen");
+    endScreen.classList.remove("hidden");
+
+    const btnBox = endScreen.querySelector(".nav-box");
+    btnBox.innerHTML = ``;
+    btnBox.innerHTML += `
+        <button onclick="" class="restart">Acessar Quizz</button>
+        <button onclick="fromFormBackToHome()">Voltar para a home</button>
+    `;
 }
 
 function openLevelsScreen() {
@@ -468,7 +489,7 @@ function lengthValidation(number, min, max = Infinity) {
     return true;
 }
 
-function saveLevelsInformation() {
+function saveLevelsInformation(response) {
     quizzInformation.levels = [];
     let validationError = false;
     let minValueZeroValidation = false;
@@ -510,16 +531,13 @@ function saveLevelsInformation() {
         return;
     }
     document.querySelector(".quizz-form_levels-screen").classList.add("hidden");
-    renderEndScreen();
-}
-
-function fromFormBackToHome() {
-    document.querySelector(".quizz-form_end-screen").classList.add("hidden");
-    document
-        .querySelector(".quizz-form_basic-info-screen")
-        .classList.remove("hidden");
-    document.querySelector(".quizz-form").classList.add("hidden");
-    document.querySelector(".home").classList.remove("hidden");
+    const postPromise = axios.post(`${URL_API}quizzes/`, quizzInformation);
+    postPromise.then(renderEndScreen);
+    postPromise.catch((err) => {
+        console.log(err.response);
+        alert("Alguma coisa deu errado com seu Quizz");
+        renderEndScreen(null);
+    });
 }
 
 function toggleLevelForm(idx) {
