@@ -24,8 +24,6 @@ let quizzLevel = {
     minValue: 0,
 };
 
-console.log("Adicionando resposta errada: " + quizzInformation)
-
 const userQuizzesHtmlClass = document.querySelector(
     ".home_created-quizzes_list"
 );
@@ -127,7 +125,7 @@ function openQuizzView(quizzId) {
 function buildQuizzView(response) {
     const quizzData = response.data;
     totalQuestions = quizzData.questions.length;
-    console.log(quizzData);
+    // console.log(quizzData);
     quizzLevels = [...quizzData.levels];
     quizzLevels.forEach((i) => {
         i.minValue = parseInt(i.minValue);
@@ -187,7 +185,7 @@ function renderQuestionAnswers(answers, questionIndex) {
             `url(${ans.image})`
         );
     });
-    console.log(answersBox);
+    // console.log(answersBox);
 }
 
 function selectAnswer(questionIndex, isCorrectAnswer, element) {
@@ -256,7 +254,7 @@ function renderResult() {
 
     let myLevel = quizzLevels[0];
     quizzLevels = quizzLevels.sort(objectLevelCompare);
-    console.log(quizzLevels);
+    // console.log(quizzLevels);
 
     for (let i = 0; i < quizzLevels.length; i++) {
         if (result < quizzLevels[i].minValue) {
@@ -378,16 +376,6 @@ function saveNumberOfQuestionsInfo() {
     quizzInformation.questions = [];
     for (let i = 0; i < numberOfQuestions; i++) {
         quizzInformation.questions.push({ ...quizzQuestion });
-        // quizzInformation.questions[i].answers.push({ ...quizzAnswer });
-
-        // console.log(quizzInformation)
-
-        //Por algum motivo que ainda não consigo entender estão sendo feitos 4 pushs ao mesmo
-        //tempo ou algo assim na linha 380.
-
-        // Vanin: por alguma razão quando vc faz o push com ...obj duas vezes, um dentro de outro objeto, como vc tá fzendo,
-        // aquele bug que a gente tava tendo volta a acontecer 😔, por isso que vc tá experienciando isso, de novo... testei pelo console
-        // também não sei como resolver 😔
     }
 }
 
@@ -457,7 +445,6 @@ function openLevelsScreen() {
     questionsValidation = resultOfTestingQuizzInfos.filter(
         (element) => element === false
     );
-    console.log(questionsValidation);
     if (questionsValidation.length === 0) {
         document
             .querySelector(".quizz-form_questions-screen")
@@ -525,7 +512,7 @@ function saveLevelsInformation(response) {
             quizzInformation.levels.push({ ...levelsForm });
         }
     });
-    console.log(minValueZeroValidation);
+    // console.log(minValueZeroValidation);
     if (!minValueZeroValidation) {
         validationError = true;
     }
@@ -539,7 +526,7 @@ function saveLevelsInformation(response) {
     const postPromise = axios.post(`${URL_API}quizzes/`, quizzInformation);
     postPromise.then(renderEndScreen);
     postPromise.catch((err) => {
-        console.log(err.response);
+        // console.log(err.response);
         alert("Alguma coisa deu errado com seu Quizz");
         renderEndScreen(null);
     });
@@ -630,7 +617,7 @@ function testQuestionsInfos() {
     testWrongAnswers(wrongAnswerText, wrongAnswerImage);
     rigthAnswerImage.forEach(testUrlImage);
 
-    saveQuestionsInformation(questionsText, questionsColors);
+    saveQuestionsInformation(questionsText, questionsColors, rigthAnswerText, rigthAnswerImage);
 }
 
 function testQuestionText(questionsText) {
@@ -730,30 +717,40 @@ function filterEmptyInputs(wrongInput) {
     }
 }
 
-function saveQuestionsInformation(questionsText, questionsColors) {
+function saveQuestionsInformation(questionsText, questionsColors, rigthAnswerText, rigthAnswerImage) {
     for (let i = 0; i < numberOfQuestions; i++) {
         quizzInformation.questions[i].title = questionsText[i].value;
         quizzInformation.questions[i].color = questionsColors[i].value;
 
         saveWrongAnswersInformation(i);
+        saveRigthAnswersInformation(i, rigthAnswerText, rigthAnswerImage);
     }
 }
 
 function saveWrongAnswersInformation(i) {
     for (let j = 0; j < wrongAnswersList[i].length + 1; j++) {
-        quizzInformation.questions[i].answers.push({ ...quizzAnswer });
+        quizzInformation.questions[i].answers = quizzInformation.questions[i].answers.concat({ ...quizzAnswer });
     }
 
     for (let j = 0; j < wrongAnswersList[i].length; j++) {
-        console.log(wrongAnswersList[i].length);
-        console.log(quizzInformation.questions[i].answers[j + 1]);
-        console.log(wrongAnswersList[j]);
 
         quizzInformation.questions[i].answers[j + 1].text =
             wrongAnswersList[j][0].value;
         quizzInformation.questions[i].answers[j + 1].image =
             wrongImagesList[j][0].value;
     }
+
+    let aux = quizzInformation.questions[i].answers.length/2; //necessary to solve a problem I don't know how to revert
+    for (let j = 0; j < aux; j++) {     
+        quizzInformation.questions[i].answers.splice(aux+1,2*aux);
+    }
+    console.log(quizzInformation)
+}
+
+function saveRigthAnswersInformation(i, rigthAnswerText, rigthAnswerImage) {
+    quizzInformation.questions[i].answers[0].text = rigthAnswerText[i].value;
+    quizzInformation.questions[i].answers[0].image = rigthAnswerImage[i].value;
+    quizzInformation.questions[i].answers[0].isCorrectAnswer = true;
 }
 
 function toggleIcon (question) {
