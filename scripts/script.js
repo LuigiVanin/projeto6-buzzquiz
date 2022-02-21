@@ -127,6 +127,9 @@ function buildQuizzView(response) {
     totalQuestions = quizzData.questions.length;
     console.log(quizzData);
     quizzLevels = [...quizzData.levels];
+    quizzLevels.forEach((i) => {
+        i.minValue = parseInt(i.minValue);
+    });
     renderQuizzBanner(quizzData);
     renderQuizzQuestions(quizzData.questions);
 }
@@ -139,7 +142,6 @@ function renderQuizzBanner(quizz) {
 }
 
 function renderQuizzQuestions(questions) {
-    // console.log(questions);
     const main = document.querySelector(".quizz-view_main");
     questions.forEach((element, i) => {
         main.innerHTML += `
@@ -156,7 +158,6 @@ function renderQuizzQuestions(questions) {
     `;
 }
 
-// TODO: reduzir o número de funções!
 function renderQuestion(question, index) {
     const title = document.querySelectorAll(".quizz-box h1");
     title[index].innerHTML = question.title;
@@ -165,7 +166,6 @@ function renderQuestion(question, index) {
 }
 
 function renderQuestionAnswers(answers, questionIndex) {
-    // console.log(answers);
     const answersBox = document.querySelectorAll(".answers")[questionIndex];
     const randomAnswers = [...answers].sort(() => Math.random() - 0.5);
     randomAnswers.forEach((ans) => {
@@ -200,25 +200,13 @@ function selectAnswer(questionIndex, isCorrectAnswer, element) {
         correctAnswerCount++;
     }
     if (questionsAnswered === totalQuestions) {
-        setTimeout(renderResult, 1000);
-
-        // FIX: scrol into view error
+        setTimeout(renderResult, 2000);
     } else {
         setTimeout(() => {
             let index = parseInt(questionIndex) + 1;
-            question[index].scrollIntoView();
-        }, 1000);
+            question[index].querySelector("h1").scrollIntoView();
+        }, 2000);
     }
-}
-
-function objectLevelCompare(a, b) {
-    if (a.minValue < b.minValue) {
-        return -1;
-    }
-    if (a.minValue > b.minValue) {
-        return 1;
-    }
-    return 0;
 }
 
 function restartData() {
@@ -248,6 +236,16 @@ function restartQuizz() {
     openQuizzView(selectedQuizzId);
 }
 
+function objectLevelCompare(a, b) {
+    if (a.minValue < b.minValue) {
+        return -1;
+    }
+    if (a.minValue > b.minValue) {
+        return 1;
+    }
+    return 0;
+}
+
 function renderResult() {
     const result = Math.round((correctAnswerCount / totalQuestions) * 100);
     const mainColumn = document.querySelector(".quizz-view_main");
@@ -256,6 +254,7 @@ function renderResult() {
 
     let myLevel = quizzLevels[0];
     quizzLevels = quizzLevels.sort(objectLevelCompare);
+    console.log(quizzLevels);
 
     for (let i = 0; i < quizzLevels.length; i++) {
         if (result < quizzLevels[i].minValue) {
@@ -263,7 +262,6 @@ function renderResult() {
         }
         myLevel = quizzLevels[i];
     }
-    console.log(myLevel);
 
     resultArea.innerHTML = `
     <h1 class="title">${result}% de acerto: ${myLevel.title}</h1>
@@ -278,8 +276,7 @@ function renderResult() {
     </div>
     `;
 
-    // FIX: scroll not working
-    resultArea.scrollIntoView();
+    mainColumn.querySelector(".nav-box").scrollIntoView();
 }
 
 function openQuestionsScreen() {

@@ -17,7 +17,7 @@
 
     --header-height: 12vh;
     --banner-height: 142px;
-    --image-width: calc(50vw - (2 * var(--answer-gap)));
+    --image-width: calc(50vw - ((2 * var(--answer-gap)) - 7px));
     --answer-gap: 15px;
 }
 

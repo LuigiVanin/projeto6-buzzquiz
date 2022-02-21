@@ -77,12 +77,12 @@ p {
     justify-content: space-between;
     flex-wrap: wrap;
     /* try to use a responsive gap */
-    gap: var(--answer-gap);
     margin-top: var(--answer-gap);
 }
 
 .answers .answer {
     width: var(--image-width);
+    margin-bottom: 15px;
 }
 
 .answers .image {
