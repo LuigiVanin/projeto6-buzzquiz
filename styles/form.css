@@ -228,3 +228,36 @@ textarea {
     border-radius: 5px;
     z-index: 3;
 }
+
+@media (min-width: 759px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    .quizz-form_levels-screen {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .quizz-form_levels-screen_main {
+        width: 759px;
+    }
+
+    .level-form {
+        width: 100%;
+    }
+
+    .level-form h1 {
+        font-size: 20px;
+    }
+
+    .quizz-form_levels-screen .title {
+        font-size: 23px;
+    }
+
+    button.restart {
+        width: 324px;
+        height: 54px;
+    }
+}
