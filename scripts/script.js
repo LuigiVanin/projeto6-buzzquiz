@@ -254,7 +254,6 @@ function renderResult() {
 
     let myLevel = quizzLevels[0];
     quizzLevels = quizzLevels.sort(objectLevelCompare);
-    // console.log(quizzLevels);
 
     for (let i = 0; i < quizzLevels.length; i++) {
         if (result < quizzLevels[i].minValue) {
@@ -422,18 +421,28 @@ function fromFormBackToHome() {
     document.querySelector(".home").classList.remove("hidden");
 }
 
+function openMyQuizz(quizzId) {
+    fromFormBackToHome();
+    openQuizzView(quizzId);
+}
+
 function renderEndScreen(response) {
     if (response === null) {
         fromFormBackToHome();
         return;
     }
+    console.log(response.data);
     const endScreen = document.querySelector(".quizz-form_end-screen");
+    const imageDiv = endScreen.querySelector(".quizz-image");
     endScreen.classList.remove("hidden");
+    const quizzId = response.data.id;
+    const imageUrl = response.data.image;
 
+    imageDiv.style.setProperty("background-image", `url(${imageUrl})`);
     const btnBox = endScreen.querySelector(".nav-box");
     btnBox.innerHTML = ``;
     btnBox.innerHTML += `
-        <button onclick="" class="restart">Acessar Quizz</button>
+        <button onclick="openMyQuizz(${quizzId})" class="restart">Acessar Quizz</button>
         <button onclick="fromFormBackToHome()">Voltar para a home</button>
     `;
 }
@@ -617,7 +626,12 @@ function testQuestionsInfos() {
     testWrongAnswers(wrongAnswerText, wrongAnswerImage);
     rigthAnswerImage.forEach(testUrlImage);
 
-    saveQuestionsInformation(questionsText, questionsColors, rigthAnswerText, rigthAnswerImage);
+    saveQuestionsInformation(
+        questionsText,
+        questionsColors,
+        rigthAnswerText,
+        rigthAnswerImage
+    );
 }
 
 function testQuestionText(questionsText) {
@@ -717,7 +731,12 @@ function filterEmptyInputs(wrongInput) {
     }
 }
 
-function saveQuestionsInformation(questionsText, questionsColors, rigthAnswerText, rigthAnswerImage) {
+function saveQuestionsInformation(
+    questionsText,
+    questionsColors,
+    rigthAnswerText,
+    rigthAnswerImage
+) {
     for (let i = 0; i < numberOfQuestions; i++) {
         quizzInformation.questions[i].title = questionsText[i].value;
         quizzInformation.questions[i].color = questionsColors[i].value;
@@ -729,22 +748,23 @@ function saveQuestionsInformation(questionsText, questionsColors, rigthAnswerTex
 
 function saveWrongAnswersInformation(i) {
     for (let j = 0; j < wrongAnswersList[i].length + 1; j++) {
-        quizzInformation.questions[i].answers = quizzInformation.questions[i].answers.concat({ ...quizzAnswer });
+        quizzInformation.questions[i].answers = quizzInformation.questions[
+            i
+        ].answers.concat({ ...quizzAnswer });
     }
 
     for (let j = 0; j < wrongAnswersList[i].length; j++) {
-
         quizzInformation.questions[i].answers[j + 1].text =
             wrongAnswersList[j][0].value;
         quizzInformation.questions[i].answers[j + 1].image =
             wrongImagesList[j][0].value;
     }
 
-    let aux = quizzInformation.questions[i].answers.length/2; //necessary to solve a problem I don't know how to revert
-    for (let j = 0; j < aux; j++) {     
-        quizzInformation.questions[i].answers.splice(aux+1,2*aux);
+    let aux = quizzInformation.questions[i].answers.length / 2; //necessary to solve a problem I don't know how to revert
+    for (let j = 0; j < aux; j++) {
+        quizzInformation.questions[i].answers.splice(aux + 1, 2 * aux);
     }
-    console.log(quizzInformation)
+    console.log(quizzInformation);
 }
 
 function saveRigthAnswersInformation(i, rigthAnswerText, rigthAnswerImage) {
@@ -753,7 +773,11 @@ function saveRigthAnswersInformation(i, rigthAnswerText, rigthAnswerImage) {
     quizzInformation.questions[i].answers[0].isCorrectAnswer = true;
 }
 
-function toggleIcon (question) {
-    question.parentNode.querySelector(".quizz-form_questions-screen_inputs-field").classList.toggle("hidden");
-    question.parentNode.querySelector(".quizz-form_questions-screen ion-icon").classList.toggle("hidden");
+function toggleIcon(question) {
+    question.parentNode
+        .querySelector(".quizz-form_questions-screen_inputs-field")
+        .classList.toggle("hidden");
+    question.parentNode
+        .querySelector(".quizz-form_questions-screen ion-icon")
+        .classList.toggle("hidden");
 }
