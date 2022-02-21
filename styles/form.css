@@ -52,7 +52,7 @@
     flex-direction: column;
 }
 
-.quizz-form_questions-screen p{
+.quizz-form_questions-screen p {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -122,16 +122,16 @@
     border-radius: 15px;
 }
 
-.hidden {
-    display: none;
-}
-
 .quizz-form_levels-screen,
 .quizz-form_end-screen {
     padding-top: var(--header-height);
     width: 100vw;
     background-color: #e5e5e5;
     min-height: 100vh;
+}
+
+.hidden {
+    display: none;
 }
 
 .quizz-form_levels-screen h1.title,
@@ -260,6 +260,10 @@ textarea {
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .quizz-form_levels-screen.hidden {
+        display: none;
     }
 
     .quizz-form_levels-screen_main {
