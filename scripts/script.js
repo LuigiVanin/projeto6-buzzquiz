@@ -24,6 +24,8 @@ let quizzLevel = {
     minValue: 0,
 };
 
+console.log("Adicionando resposta errada: " + quizzInformation)
+
 const userQuizzesHtmlClass = document.querySelector(
     ".home_created-quizzes_list"
 );
@@ -31,7 +33,7 @@ const nonUserQuizzesHtmlCLass = document.querySelector(
     ".home_non-user-quizzes"
 );
 // const storedUserQuizzes = JSON.parse(localStorage.getItem("userQuizz"));
-const storedUserQuizzes = [{ id: -1 }, { id: -2 }, { id: -3 }]; //for testing only
+const storedUserQuizzes = [];
 const URL_API = "https://mock-api.driven.com.br/api/v4/buzzquizz/";
 
 let quizzLevels = null;
@@ -376,7 +378,9 @@ function saveNumberOfQuestionsInfo() {
     quizzInformation.questions = [];
     for (let i = 0; i < numberOfQuestions; i++) {
         quizzInformation.questions.push({ ...quizzQuestion });
-        quizzInformation.questions[i].answers.push({ ...quizzAnswer });
+        // quizzInformation.questions[i].answers.push({ ...quizzAnswer });
+
+        // console.log(quizzInformation)
 
         //Por algum motivo que ainda não consigo entender estão sendo feitos 4 pushs ao mesmo
         //tempo ou algo assim na linha 380.
@@ -395,24 +399,26 @@ function loadQuestionScreen() {
         questionListHtmlClass.innerHTML += `
         
         <div class="quizz-form_questions-screen_question-num">
-            <p>Pergunta ${i}</p>
-            <input type="text" placeholder="Texto da pergunta" class="question-text">
-            <input type="text" placeholder="Cor de fundo da pergunta" class="question-color">
-            <p>Resposta correta</p>
-            <input type="text" placeholder="Resposta correta" class="question-right-answer-text">
-            <input type="text" placeholder="URL da imagem" class="question-right-answer-image">
-            <p>Respostas incorretas</p>
-            <div class="quizz-form_questions-screen_wrong-answer1">
-                <input type="text" placeholder="Resposta incorreta 1" class="question-wrong-answer1-text">
-                <input type="text" placeholder="URL da imagem 1" class="question-wrong-answer1-image">
-            </div>
-            <div class="quizz-form_questions-screen_wrong-answer2">
-                <input type="text" placeholder="Resposta incorreta 2" class="question-wrong-answer2-text">
-                <input type="text" placeholder="URL da imagem 2" class="question-wrong-answer2-image">
-            </div>
-            <div class="quizz-form_questions-screen_wrong-answer3">
-                <input type="text" placeholder="Resposta incorreta 3" class="question-wrong-answer3-text">
-                <input type="text" placeholder="URL da imagem 3" class="question-wrong-answer3-image">
+            <h1 onclick="toggleIcon(this)">Pergunta ${i} <ion-icon name="create-sharp"></ion-icon></h1>
+            <div class="quizz-form_questions-screen_inputs-field hidden">
+                <input type="text" placeholder="Texto da pergunta" class="question-text">
+                <input type="text" placeholder="Cor de fundo da pergunta" class="question-color">
+                <p>Resposta correta</p>
+                <input type="text" placeholder="Resposta correta" class="question-right-answer-text">
+                <input type="text" placeholder="URL da imagem" class="question-right-answer-image">
+                <p>Respostas incorretas</p>
+                <div class="quizz-form_questions-screen_wrong-answer">
+                    <input type="text" placeholder="Resposta incorreta 1" class="question-wrong-answer1-text">
+                    <input type="text" placeholder="URL da imagem 1" class="question-wrong-answer1-image">
+                </div>
+                <div class="quizz-form_questions-screen_wrong-answer">
+                    <input type="text" placeholder="Resposta incorreta 2" class="question-wrong-answer2-text">
+                    <input type="text" placeholder="URL da imagem 2" class="question-wrong-answer2-image">
+                </div>
+                <div class="quizz-form_questions-screen_wrong-answer">
+                    <input type="text" placeholder="Resposta incorreta 3" class="question-wrong-answer3-text">
+                    <input type="text" placeholder="URL da imagem 3" class="question-wrong-answer3-image">
+                </div>
             </div>
         </div>
         `;
@@ -734,7 +740,7 @@ function saveQuestionsInformation(questionsText, questionsColors) {
 }
 
 function saveWrongAnswersInformation(i) {
-    for (let j = 0; j < wrongAnswersList[i].length; j++) {
+    for (let j = 0; j < wrongAnswersList[i].length + 1; j++) {
         quizzInformation.questions[i].answers.push({ ...quizzAnswer });
     }
 
@@ -748,4 +754,9 @@ function saveWrongAnswersInformation(i) {
         quizzInformation.questions[i].answers[j + 1].image =
             wrongImagesList[j][0].value;
     }
+}
+
+function toggleIcon (question) {
+    question.parentNode.querySelector(".quizz-form_questions-screen_inputs-field").classList.toggle("hidden");
+    question.parentNode.querySelector(".quizz-form_questions-screen ion-icon").classList.toggle("hidden");
 }
